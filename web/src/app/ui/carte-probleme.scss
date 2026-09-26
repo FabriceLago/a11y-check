@@ -1,0 +1,84 @@
+:host {
+  display: block;
+}
+
+.carte {
+  --c-niveau: var(--c-ameliorer);
+  --c-niveau-bg: var(--c-ameliorer-bg);
+  &[data-niveau='critique'] { --c-niveau: var(--c-critique); --c-niveau-bg: var(--c-critique-bg); }
+  &[data-niveau='importante'] { --c-niveau: var(--c-importante); --c-niveau-bg: var(--c-importante-bg); }
+
+  padding: var(--space-4);
+  border: 1px solid var(--c-border);
+  border-left: 6px solid var(--c-niveau);
+  border-radius: var(--radius);
+  background: var(--c-bg);
+  box-shadow: var(--shadow);
+}
+
+.carte__entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-2);
+  h3 { flex: 1 1 18rem; margin: 0; }
+}
+
+// Priority is a word, with a distinct border style per level (not colour alone).
+.badge {
+  flex: none;
+  margin: 0;
+  padding: 0.15rem 0.75rem;
+  border: 2px solid var(--c-niveau);
+  border-radius: 999px;
+  background: var(--c-niveau-bg);
+  color: var(--c-niveau);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  [data-niveau='importante'] & { border-style: dashed; }
+  [data-niveau='ameliorer'] & { border-style: dotted; }
+}
+
+.pourquoi {
+  max-width: var(--measure);
+}
+
+.faits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  dt { color: var(--c-text-muted); font-size: var(--fs-sm); }
+  dd { margin: 0; font-weight: 700; }
+}
+
+.etapes {
+  padding-left: 1.4em;
+  li + li { margin-top: var(--space-2); }
+}
+
+.cms {
+  margin-bottom: var(--space-3);
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    color: var(--c-link);
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  dl { margin: var(--space-2) 0 0; }
+  dt { font-weight: 700; }
+  dd { margin: 0 0 var(--space-2); }
+}
+
+.wcag {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--fs-sm);
+}

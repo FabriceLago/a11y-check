@@ -1,0 +1,44 @@
+<section class="eaa" aria-labelledby="titre-eaa">
+  <h2 id="titre-eaa">Votre entreprise est-elle concernée par l'EAA&nbsp;?</h2>
+  <p class="intro">
+    Trois questions pour vous situer. Vos réponses restent dans votre navigateur&nbsp;: nous ne les enregistrons pas.
+  </p>
+
+  <form (submit)="evaluer($event)" novalidate>
+    @for (q of questions; track q.id; let i = $index) {
+      <fieldset
+        class="groupe"
+        [class.invalide]="manquantes().includes(q.id)"
+        [attr.aria-describedby]="manquantes().includes(q.id) ? 'eaa-erreur-' + q.id : null"
+      >
+        <legend>{{ i + 1 }}. {{ q.legende }}</legend>
+        @if (manquantes().includes(q.id)) {
+          <p class="message-erreur" [id]="'eaa-erreur-' + q.id">
+            <span class="message-erreur__icone" aria-hidden="true">!</span> Choisissez une réponse.
+          </p>
+        }
+        @for (o of q.options; track o.valeur) {
+          <label class="choix">
+            <input
+              type="radio"
+              [name]="'eaa-' + q.id"
+              [value]="o.valeur"
+              [checked]="reponses()[q.id] === o.valeur"
+              (change)="choisir(q.id, o.valeur)"
+            />
+            <span>{{ o.libelle }}</span>
+          </label>
+        }
+      </fieldset>
+    }
+    <button type="submit" class="button">Voir la réponse</button>
+  </form>
+
+  @if (verdict(); as v) {
+    <div class="verdict">
+      <h3 #titreVerdict tabindex="-1">{{ v.titre }}</h3>
+      <p>{{ v.texte }}</p>
+      <p class="avertissement">{{ avertissement }}</p>
+    </div>
+  }
+</section>

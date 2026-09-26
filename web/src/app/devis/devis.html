@@ -1,0 +1,160 @@
+<main id="contenu" tabindex="-1" class="wrap page">
+  <h1>Faire corriger mon site</h1>
+
+  @if (envoye(); as merciTexte) {
+    <section class="merci" aria-labelledby="titre-merci">
+      <h2 id="titre-merci" #merci tabindex="-1">Demande envoyée</h2>
+      <p class="message-succes" role="status">{{ merciTexte }}</p>
+      <p>Un e-mail de confirmation vient de vous être envoyé à {{ email() }}.</p>
+      <a routerLink="/" class="button button--secondary">Retour à l'accueil</a>
+    </section>
+  } @else {
+    <p class="chapeau">
+      Vous avez un rapport, mais pas le temps ou les compétences pour tout corriger ? Nous pouvons nous en charger, ou
+      accompagner votre webdesigner. Décrivez votre besoin : nous vous répondons sous 2 jours ouvrables avec un devis,
+      sans engagement.
+    </p>
+
+    @if (rapport(); as r) {
+      <p class="lie">
+        Votre demande sera accompagnée du rapport de <strong>{{ nomDuSite(r.finalUrl) }}</strong>
+        ({{ r.score }} sur 100, {{ r.totalProblemes }} problème{{ r.totalProblemes > 1 ? 's' : '' }} détecté{{ r.totalProblemes > 1 ? 's' : '' }}) :
+        inutile de nous le renvoyer.
+      </p>
+    }
+
+    @if (listeErreurs().length || erreurGenerale()) {
+      <div class="recap-erreurs" #recap tabindex="-1" aria-labelledby="titre-recap">
+        <h2 id="titre-recap">
+          @if (listeErreurs().length) {
+            {{ listeErreurs().length === 1 ? 'Un point est à corriger' : listeErreurs().length + ' points sont à corriger' }}
+          } @else {
+            Votre demande n'a pas pu être envoyée
+          }
+        </h2>
+        @if (erreurGenerale(); as e) {
+          <p>{{ e }}</p>
+        }
+        <ul>
+          @for (e of listeErreurs(); track e.id) {
+            <li><a [href]="'#' + e.id" (click)="allerA($event, e.id)">{{ e.message }}</a></li>
+          }
+        </ul>
+      </div>
+    }
+
+    <form (submit)="envoyer($event)" novalidate>
+      <fieldset class="groupe">
+        <legend class="groupe-titre">Vous</legend>
+        <div class="champs">
+          <div>
+            <label class="libelle" for="devis-nom">Votre nom</label>
+            @if (erreur('devis-nom'); as e) {
+              <p class="message-erreur" id="devis-nom-erreur"><span class="message-erreur__icone" aria-hidden="true">!</span>{{ e }}</p>
+            }
+            <input class="champ" id="devis-nom" type="text" autocomplete="name" maxlength="100"
+              [value]="nom()" (input)="nom.set($any($event.target).value)"
+              [attr.aria-invalid]="erreur('devis-nom') ? 'true' : null"
+              [attr.aria-describedby]="erreur('devis-nom') ? 'devis-nom-erreur' : null" />
+          </div>
+          <div>
+            <label class="libelle" for="devis-entreprise">Entreprise <span class="facultatif">(facultatif)</span></label>
+            <input class="champ" id="devis-entreprise" type="text" autocomplete="organization" maxlength="150"
+              [value]="entreprise()" (input)="entreprise.set($any($event.target).value)" />
+          </div>
+          <div>
+            <label class="libelle" for="devis-email">Adresse e-mail</label>
+            @if (erreur('devis-email'); as e) {
+              <p class="message-erreur" id="devis-email-erreur"><span class="message-erreur__icone" aria-hidden="true">!</span>{{ e }}</p>
+            }
+            <input class="champ" id="devis-email" type="email" autocomplete="email" spellcheck="false" maxlength="254"
+              [value]="email()" (input)="email.set($any($event.target).value)"
+              [attr.aria-invalid]="erreur('devis-email') ? 'true' : null"
+              [attr.aria-describedby]="erreur('devis-email') ? 'devis-email-erreur' : null" />
+          </div>
+          <div>
+            <label class="libelle" for="devis-telephone">Téléphone <span class="facultatif">(facultatif)</span></label>
+            <input class="champ" id="devis-telephone" type="tel" autocomplete="tel" maxlength="30"
+              [value]="telephone()" (input)="telephone.set($any($event.target).value)" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="groupe">
+        <legend class="groupe-titre">Votre site</legend>
+        <div class="champs">
+          <div>
+            <label class="libelle" for="devis-site">Adresse du site</label>
+            @if (erreur('devis-site'); as e) {
+              <p class="message-erreur" id="devis-site-erreur"><span class="message-erreur__icone" aria-hidden="true">!</span>{{ e }}</p>
+            }
+            <input class="champ" id="devis-site" type="text" inputmode="url" autocomplete="url" spellcheck="false" maxlength="2048"
+              [value]="site()" (input)="site.set($any($event.target).value)"
+              [attr.aria-invalid]="erreur('devis-site') ? 'true' : null"
+              [attr.aria-describedby]="erreur('devis-site') ? 'devis-site-erreur' : null" />
+          </div>
+          <div>
+            <label class="libelle" for="devis-outil">Outil utilisé pour le site</label>
+            <select class="champ" id="devis-outil" (change)="outil.set($any($event.target).value)">
+              @for (o of outils; track o[0]) {
+                <option [value]="o[0]" [selected]="outil() === o[0]">{{ o[1] }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="groupe" id="devis-besoins" [class.invalide]="!!erreur('devis-besoins')"
+        [attr.aria-describedby]="erreur('devis-besoins') ? 'devis-besoins-aide devis-besoins-erreur' : 'devis-besoins-aide'">
+        <legend class="groupe-titre">Ce que vous souhaitez</legend>
+        <p class="aide" id="devis-besoins-aide">Plusieurs choix possibles.</p>
+        @if (erreur('devis-besoins'); as e) {
+          <p class="message-erreur" id="devis-besoins-erreur"><span class="message-erreur__icone" aria-hidden="true">!</span>{{ e }}</p>
+        }
+        @for (b of besoinsOptions; track b[0]) {
+          <label class="choix">
+            <input type="checkbox" [value]="b[0]" [checked]="besoins().includes(b[0])" (change)="basculer(b[0], $any($event.target).checked)" />
+            <span>{{ b[1] }}</span>
+          </label>
+        }
+      </fieldset>
+
+      <div class="champs">
+        <div>
+          <label class="libelle" for="devis-delai">Délai souhaité</label>
+          <select class="champ" id="devis-delai" (change)="delai.set($any($event.target).value)">
+            @for (d of delais; track d[0]) {
+              <option [value]="d[0]" [selected]="delai() === d[0]">{{ d[1] }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="libelle" for="devis-budget">Budget envisagé <span class="facultatif">(facultatif)</span></label>
+          <select class="champ" id="devis-budget" (change)="budget.set($any($event.target).value)">
+            @for (b of budgets; track b[0]) {
+              <option [value]="b[0]" [selected]="budget() === b[0]">{{ b[1] }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <label class="libelle" for="devis-message">Votre message <span class="facultatif">(facultatif)</span></label>
+      <p class="aide" id="devis-message-aide">Un contexte, une échéance, une question : tout ce qui nous aide à vous répondre.</p>
+      <textarea class="champ" id="devis-message" maxlength="3000" aria-describedby="devis-message-aide"
+        [value]="message()" (input)="message.set($any($event.target).value)"></textarea>
+
+      <div class="piege" aria-hidden="true">
+        <label for="devis-siteweb">Ne pas remplir ce champ</label>
+        <input id="devis-siteweb" type="text" tabindex="-1" autocomplete="off" [value]="siteWeb()" (input)="siteWeb.set($any($event.target).value)" />
+      </div>
+
+      <p class="petit">
+        Nous utilisons ces informations uniquement pour vous répondre et préparer votre devis.
+        <a routerLink="/confidentialite">Politique de confidentialité</a>
+      </p>
+      <button type="submit" class="button" [attr.aria-disabled]="envoi() ? 'true' : null">
+        {{ envoi() ? 'Envoi en cours…' : 'Envoyer ma demande' }}
+      </button>
+    </form>
+  }
+</main>

@@ -1,0 +1,260 @@
+<main id="contenu" tabindex="-1" class="wrap page">
+  <h1>Design system</h1>
+  <p class="chapeau">
+    Les composants de cet outil, et les règles d'accessibilité qu'ils respectent. Un outil qui mesure l'accessibilité
+    doit d'abord l'appliquer : chaque élément ci-dessous est utilisé tel quel dans l'application.
+  </p>
+
+  <nav aria-labelledby="titre-sommaire" class="sommaire">
+    <h2 id="titre-sommaire">Sommaire</h2>
+    <ul>
+      <li><a [routerLink]="[]" fragment="ds-principes">Principes</a></li>
+      <li><a [routerLink]="[]" fragment="ds-couleurs">Couleurs et contrastes</a></li>
+      <li><a [routerLink]="[]" fragment="ds-typo">Typographie et espacements</a></li>
+      <li><a [routerLink]="[]" fragment="ds-focus">Focus</a></li>
+      <li><a [routerLink]="[]" fragment="ds-composants">Composants</a></li>
+    </ul>
+  </nav>
+
+  <section id="ds-principes" aria-labelledby="titre-principes">
+    <h2 id="titre-principes">Principes</h2>
+    <ul>
+      <li><strong>WCAG 2.2 AA au minimum</strong>, AAA visé pour les contrastes de texte.</li>
+      <li><strong>Jamais la couleur seule</strong> : chaque état a aussi un mot, une icône ou une forme.</li>
+      <li><strong>Tout au clavier</strong>, avec un focus épais et visible sur n'importe quel fond.</li>
+      <li><strong>Cibles de 44 × 44 pixels</strong> au minimum pour les boutons, liens d'action et champs.</li>
+      <li><strong>Ce qui change est annoncé</strong> aux lecteurs d'écran (zones <code>role="status"</code>, focus déplacé sur les titres).</li>
+      <li><strong>Préférences respectées</strong> : thème clair ou sombre du système, animations réduites.</li>
+    </ul>
+  </section>
+
+  <section id="ds-couleurs" aria-labelledby="titre-couleurs">
+    <h2 id="titre-couleurs">Couleurs et contrastes</h2>
+    <p>
+      Les ratios sont <strong>calculés en direct</strong> à partir des couleurs réellement appliquées, pour le thème
+      {{ theme() }} affiché actuellement : ils ne peuvent pas être en décalage avec le code. Changez le thème de votre
+      système pour voir l'autre palette.
+    </p>
+    <div class="tableau-defilant" tabindex="0" role="region" aria-labelledby="legende-contrastes">
+      <table>
+        <caption id="legende-contrastes">Paires de couleurs et ratio de contraste (thème {{ theme() }})</caption>
+        <thead>
+          <tr>
+            <th scope="col">Usage</th>
+            <th scope="col">Aperçu</th>
+            <th scope="col">Couleurs</th>
+            <th scope="col">Ratio</th>
+            <th scope="col">Niveau</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of contrastes(); track c.usage) {
+            <tr>
+              <th scope="row">{{ c.usage }}</th>
+              <td>
+                <span class="apercu" aria-hidden="true" [style.color]="'var(' + c.texte + ')'" [style.background]="'var(' + c.fond + ')'">
+                  {{ c.nonTexte ? '■■■' : 'Aa' }}
+                </span>
+              </td>
+              <td><code>{{ c.texte }}</code> ({{ c.valeurTexte }}) sur <code>{{ c.fond }}</code> ({{ c.valeurFond }})</td>
+              <td>{{ formatRatio(c.ratio) }}</td>
+              <td><span class="niveau" [class.insuffisant]="c.niveau === 'Insuffisant'">{{ c.niveau }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="petit">
+      Seuils WCAG : texte 4,5:1 (AA) et 7:1 (AAA) ; éléments d'interface et graphiques 3:1. Ratios arrondis vers le bas.
+    </p>
+  </section>
+
+  <section id="ds-typo" aria-labelledby="titre-typo">
+    <h2 id="titre-typo">Typographie et espacements</h2>
+    <p>
+      Police : <strong>Atkinson Hyperlegible</strong>, dessinée par le Braille Institute pour les personnes malvoyantes
+      (lettres faciles à distinguer : I, l, 1). Elle est hébergée sur notre serveur : aucun appel à Google Fonts.
+    </p>
+    <dl class="echelle">
+      <div><dt>Titre 1</dt><dd class="t1">Votre site est-il accessible ?</dd></div>
+      <div><dt>Titre 2</dt><dd class="t2">Les points à corriger</dd></div>
+      <div><dt>Titre 3</dt><dd class="t3">Certaines images n'ont pas de description</dd></div>
+      <div><dt>Texte courant (18 px, interligne 1,6)</dt><dd>Un texte confortable, même pour les personnes qui lisent lentement.</dd></div>
+      <div><dt>Petit texte (16 px minimum)</dt><dd class="petit">Mentions et aides, jamais plus petit.</dd></div>
+    </dl>
+    <p>
+      Espacements : échelle de 4 à 72 pixels (<code>--space-1</code> à <code>--space-7</code>). Lignes limitées à
+      environ 70 caractères (<code>--measure</code>) pour faciliter la lecture.
+    </p>
+  </section>
+
+  <section id="ds-focus" aria-labelledby="titre-focus">
+    <h2 id="titre-focus">Focus</h2>
+    <p>
+      Anneau orange de 3 pixels, décalé de 2 pixels, avec un liseré de la couleur du fond : il reste visible sur un
+      fond clair, sombre ou coloré. Il n'apparaît qu'à la navigation au clavier (<code>:focus-visible</code>).
+      Essayez avec la touche Tab :
+    </p>
+    <div class="demo demo--focus">
+      <button type="button" class="button">Bouton principal</button>
+      <button type="button" class="button button--secondary">Bouton secondaire</button>
+      <a routerLink="/design-system">Un lien</a>
+    </div>
+  </section>
+
+  <section id="ds-composants" aria-labelledby="titre-composants">
+    <h2 id="titre-composants">Composants</h2>
+
+    <article class="composant" aria-labelledby="c-bouton">
+      <h3 id="c-bouton">Bouton</h3>
+      <div class="demo">
+        <button type="button" class="button">Analyser mon site</button>
+        <button type="button" class="button button--secondary">Retour</button>
+        <button type="button" class="button" aria-disabled="true">Envoi en cours…</button>
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li>Un vrai <code>&lt;button&gt;</code> pour une action, un <code>&lt;a&gt;</code> pour aller ailleurs.</li>
+        <li>Hauteur minimale de 44 pixels.</li>
+        <li>Pendant un envoi : <code>aria-disabled</code> plutôt que <code>disabled</code>, pour que le bouton reste atteignable et son libellé lisible.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.bouton }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-champ">
+      <h3 id="c-champ">Champ de saisie et message d'erreur</h3>
+      <div class="demo">
+        <label class="libelle" for="ds-email-ok">Adresse e-mail</label>
+        <input class="champ" id="ds-email-ok" type="email" autocomplete="off" />
+        <label class="libelle" for="ds-email">Adresse e-mail (avec une erreur)</label>
+        <p class="message-erreur" id="ds-email-erreur">
+          <span class="message-erreur__icone" aria-hidden="true">!</span>Cette adresse e-mail ne semble pas valide.
+        </p>
+        <input class="champ" id="ds-email" type="email" autocomplete="off" value="marie@" aria-invalid="true" aria-describedby="ds-email-erreur" />
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li>Toujours une étiquette visible reliée au champ (<code>for</code> / <code>id</code>), jamais un simple texte d'exemple.</li>
+        <li>L'erreur est dite en mots, reliée au champ (<code>aria-describedby</code>) et signalée par <code>aria-invalid</code>.</li>
+        <li>Erreur = texte + icône + bordure plus épaisse : jamais la couleur seule.</li>
+        <li><code>autocomplete</code> renseigné pour que le navigateur remplisse à la place de la personne.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.champ }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-choix">
+      <h3 id="c-choix">Cases à cocher et boutons radio</h3>
+      <div class="demo">
+        <fieldset class="groupe">
+          <legend>À qui vendez-vous ?</legend>
+          <label class="choix"><input type="radio" name="ds-clients" value="particuliers" /> <span>À des particuliers</span></label>
+          <label class="choix"><input type="radio" name="ds-clients" value="pros" /> <span>Uniquement à des professionnels</span></label>
+        </fieldset>
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li>Groupe dans un <code>fieldset</code> avec une <code>legend</code> : la question est annoncée avec chaque option.</li>
+        <li>Toute la ligne est cliquable (cible de 44 pixels), pas seulement le petit rond.</li>
+        <li>Contrôles natifs : clavier (flèches, espace) et lecteurs d'écran fonctionnent sans code.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.choix }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-recap">
+      <h3 id="c-recap">Récapitulatif d'erreurs</h3>
+      <div class="demo">
+        <div class="recap-erreurs" aria-labelledby="ds-titre-recap">
+          <p id="ds-titre-recap" class="recap-titre"><strong>2 points sont à corriger</strong></p>
+          <ul>
+            <li><a routerLink="/faire-corriger">Indiquez votre nom.</a></li>
+            <li><a routerLink="/faire-corriger">Choisissez au moins une option.</a></li>
+          </ul>
+        </div>
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li>Pour les formulaires longs : à l'envoi, le focus va sur ce récapitulatif, lu en entier.</li>
+        <li>Chaque lien amène directement dans le champ concerné.</li>
+        <li>Les erreurs restent aussi affichées à côté de chaque champ.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.recap }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-statut">
+      <h3 id="c-statut">Message de confirmation</h3>
+      <div class="demo">
+        <p class="message-succes">C'est envoyé ! Vérifiez votre boîte de réception.</p>
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li><code>role="status"</code> : le message est annoncé sans interrompre la lecture en cours.</li>
+        <li>Quand le formulaire disparaît, le focus est placé sur le message pour ne pas perdre la personne.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.statut }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-jauge">
+      <h3 id="c-jauge">Jauge de score</h3>
+      <div class="demo demo--jauges">
+        <app-score-jauge [score]="32" palier="Des obstacles importants" />
+        <app-score-jauge [score]="65" palier="Une base à consolider" />
+        <app-score-jauge [score]="91" palier="Une bonne base" />
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li>L'anneau est décoratif (<code>aria-hidden</code>) : l'information est portée par le texte « Score : 65 sur 100 ».</li>
+        <li>Le palier est dit en mots, avec une icône différente par niveau, en plus de la couleur.</li>
+        <li>L'animation de remplissage disparaît si le système demande de réduire les animations.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.jauge }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-carte">
+      <h3 id="c-carte">Carte problème et badge de priorité</h3>
+      <div class="demo">
+        <app-carte-probleme [probleme]="exemple" />
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li>Chaque carte est une région nommée par son titre (niveau 3), pour naviguer de problème en problème.</li>
+        <li>La priorité est un mot (« Critique »), avec une bordure pleine, en tirets ou en pointillés selon le niveau.</li>
+        <li>Les instructions par outil sont repliées dans un <code>details</code> natif, ouvrable au clavier.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.carte }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-progression">
+      <h3 id="c-progression">Barre de progression</h3>
+      <div class="demo">
+        <label for="ds-progression">Pages analysées</label>
+        <progress id="ds-progression" value="4" max="10"></progress>
+        <p>4 pages analysées sur 10.</p>
+      </div>
+      <h4>Accessibilité</h4>
+      <ul>
+        <li>Élément natif <code>progress</code> avec une étiquette : la valeur est annoncée.</li>
+        <li>Doublée d'un texte en <code>role="status"</code> : chaque avancée est annoncée une fois.</li>
+        <li>Si la durée est inconnue, une barre décorative (<code>aria-hidden</code>) et la liste des étapes terminées.</li>
+      </ul>
+      <h4>Code</h4>
+      <pre><code>{{ code.progression }}</code></pre>
+    </article>
+
+    <article class="composant" aria-labelledby="c-evitement">
+      <h3 id="c-evitement">Lien d'évitement</h3>
+      <p>
+        Premier élément de chaque page, invisible jusqu'à la première pression sur Tab : il permet de sauter l'en-tête et
+        d'arriver directement au contenu. Essayez en rechargeant cette page puis en appuyant sur Tab.
+      </p>
+      <h4>Code</h4>
+      <pre><code>{{ code.evitement }}</code></pre>
+    </article>
+  </section>
+</main>

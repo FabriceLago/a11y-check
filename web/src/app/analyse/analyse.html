@@ -1,0 +1,91 @@
+<main id="contenu" tabindex="-1" class="wrap page">
+  @if (erreur(); as message) {
+    <section class="erreur" aria-labelledby="titre-erreur">
+      <h1 id="titre-erreur" #titre tabindex="-1">L'analyse n'a pas pu aboutir</h1>
+      <p class="erreur__message" role="alert">{{ message }}</p>
+      <div class="actions">
+        @if (job()?.url) {
+          <button type="button" class="button" (click)="relancer()">Relancer l'analyse</button>
+        }
+        <a routerLink="/" class="button button--secondary">Analyser une autre adresse</a>
+      </div>
+    </section>
+  } @else if (rapport(); as r) {
+    <article class="rapport" aria-labelledby="titre-rapport">
+      <header class="rapport__entete">
+        <h1 id="titre-rapport" #titre tabindex="-1">Résultat pour {{ site() }}</h1>
+        <p class="meta">
+          Page d'accueil analysée le {{ date() }}&nbsp;:
+          <a [href]="r.finalUrl" rel="noopener noreferrer">{{ urlLisible() }}</a>
+        </p>
+        @if (paiement() === 'annule') {
+          <p class="annule" role="status">
+            Paiement annulé : rien n'a été débité. Vous pouvez commander le rapport complet quand vous le souhaitez.
+          </p>
+        }
+      </header>
+
+      <section class="resume" aria-labelledby="titre-resume">
+        <h2 id="titre-resume" class="visually-hidden">Résumé</h2>
+        <app-score-jauge [score]="r.score" [palier]="r.palier" />
+        <div class="resume__texte">
+          <p class="synthese">{{ r.synthese }}</p>
+          @if (r.effortTotal; as effort) {
+            <p class="effort"><strong>Temps de correction estimé&nbsp;:</strong> {{ effort.texte }}.</p>
+          }
+        </div>
+      </section>
+
+      <section class="mentions" aria-labelledby="titre-mentions">
+        <h2 id="titre-mentions">À savoir avant de lire ce rapport</h2>
+        <ul>
+          @for (mention of r.mentions; track mention) {
+            <li>{{ mention }}</li>
+          }
+        </ul>
+      </section>
+
+      @if (r.problemes.length) {
+        <section class="priorites" aria-labelledby="titre-priorites">
+          <h2 id="titre-priorites">
+            {{ r.problemes.length === 1 ? 'Le point à corriger en priorité' : 'Les ' + r.problemes.length + ' points à corriger en priorité' }}
+          </h2>
+          <ol class="cartes">
+            @for (p of r.problemes; track p.id) {
+              <li><app-carte-probleme [probleme]="p" /></li>
+            }
+          </ol>
+        </section>
+      }
+      @if (reste(); as reste) {
+        <p class="reste">{{ reste }}</p>
+      }
+      <app-offre-pdf class="bloc-suivant" [scanId]="id()" />
+      <section class="bloc-suivant corriger" aria-labelledby="titre-corriger">
+        <h2 id="titre-corriger">Pas le temps de tout corriger&nbsp;?</h2>
+        <p>Nous pouvons nous en charger, ou accompagner votre webdesigner. Réponse sous 2 jours ouvrables, sans engagement.</p>
+        <a class="button button--secondary" routerLink="/faire-corriger" [queryParams]="{ scan: id() }">Faire corriger mon site</a>
+      </section>
+      <app-questionnaire-eaa class="bloc-suivant" />
+      <app-rapport-email class="bloc-suivant" [scanId]="id()" />
+    </article>
+  } @else {
+    <section class="attente" aria-labelledby="titre-attente">
+      <h1 id="titre-attente" #titre tabindex="-1">Analyse de {{ site() }} en cours</h1>
+      <p>Cela prend généralement moins d'une minute. Vous pouvez rester sur cette page&nbsp;: le résultat s'affichera tout seul.</p>
+
+      <div class="progression" aria-hidden="true"><span></span></div>
+
+      <p class="file" role="status">{{ file() }}</p>
+
+      <!-- Polite live region: only newly added steps are announced, never the whole list again. -->
+      <div aria-live="polite">
+        <ol class="etapes" aria-label="Étapes de l'analyse">
+          @for (etape of etapes(); track $index) {
+            <li><span class="coche" aria-hidden="true">✓</span>{{ etape }}</li>
+          }
+        </ol>
+      </div>
+    </section>
+  }
+</main>

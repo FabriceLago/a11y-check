@@ -1,0 +1,53 @@
+// Layout only: fields and messages come from styles/_composants.scss.
+.hero {
+  padding-block: var(--space-6) var(--space-5);
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+}
+
+h1 {
+  max-width: 20ch;
+}
+
+.chapeau {
+  max-width: var(--measure);
+  font-size: var(--fs-1);
+  color: var(--c-text-muted);
+  margin-bottom: var(--space-5);
+}
+
+.formulaire {
+  max-width: 40rem;
+}
+.formulaire__label {
+  font-size: var(--fs-1);
+}
+.formulaire__ligne {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  .champ {
+    flex: 1 1 16rem;
+    max-width: none;
+    margin: 0;
+  }
+  .button {
+    flex: 0 0 auto;
+    min-height: 3.25rem;
+  }
+}
+
+.rassurance {
+  margin: var(--space-3) 0 0;
+  color: var(--c-text-muted);
+}
+
+.eaa {
+  padding-top: var(--space-6);
+  p { max-width: var(--measure); }
+}
+.eaa__note {
+  padding-left: var(--space-3);
+  border-left: 4px solid var(--c-accent);
+  font-weight: 700;
+}

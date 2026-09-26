@@ -1,0 +1,86 @@
+<main id="contenu" tabindex="-1" class="wrap page">
+  <h1>Conditions générales de vente</h1>
+
+  @if (incomplet) {
+    <p class="avertissement">
+      Page incomplète : l'identité du vendeur doit être renseignée avant la mise en ligne. Ces conditions doivent être
+      relues par un juriste.
+    </p>
+  }
+
+  <section aria-labelledby="cgv-vendeur">
+    <h2 id="cgv-vendeur">1. Qui vend ?</h2>
+    <p>
+      {{ r.nom }}, {{ r.adresse }}, numéro d'entreprise {{ r.bce }}, TVA {{ r.tva }}. Contact : {{ r.email }}.
+    </p>
+  </section>
+
+  <section aria-labelledby="cgv-objet">
+    <h2 id="cgv-objet">2. Ce que vous achetez</h2>
+    <p>
+      Un rapport d'accessibilité au format PDF sur votre site : analyse automatique de la page d'accueil et de jusqu'à
+      9 autres pages accessibles depuis le menu et le pied de page, plan d'action, captures d'écran, annexe technique
+      et liste de vérifications manuelles.
+    </p>
+    <p>
+      <strong>Limites du service.</strong> Les tests automatiques ne détectent qu'une partie des problèmes
+      d'accessibilité (environ un tiers). Le rapport ne constitue ni une certification, ni une attestation de
+      conformité, ni un avis juridique.
+    </p>
+  </section>
+
+  <section aria-labelledby="cgv-prix">
+    <h2 id="cgv-prix">3. Prix et paiement</h2>
+    <p>
+      Le prix est de 39 euros, TVA belge de 21 % comprise. Le paiement est traité par notre prestataire Stripe ; nous
+      n'avons jamais accès à vos données de paiement. Une facture vous est envoyée par e-mail.
+    </p>
+  </section>
+
+  <section aria-labelledby="cgv-livraison">
+    <h2 id="cgv-livraison">4. Livraison</h2>
+    <p>
+      Le rapport est préparé dès la confirmation du paiement et vous est envoyé par e-mail, en général en moins de
+      10 minutes. Il reste téléchargeable pendant 12 mois grâce au lien contenu dans l'e-mail.
+    </p>
+    <p>
+      Si votre site ne peut pas être analysé (site hors ligne, trop lent, bloquant les robots), nous faisons trois
+      tentatives. En cas d'échec, vous êtes <strong>intégralement et automatiquement remboursé</strong>.
+    </p>
+  </section>
+
+  <section aria-labelledby="cgv-retractation">
+    <h2 id="cgv-retractation">5. Droit de rétractation</h2>
+    <p>
+      Le rapport est un contenu numérique fourni immédiatement. Conformément au Code de droit économique
+      (article VI.53, 13°), en demandant expressément sa livraison immédiate lors du paiement, vous reconnaissez perdre
+      votre droit de rétractation de 14 jours dès le début de la préparation du rapport.
+    </p>
+  </section>
+
+  <section aria-labelledby="cgv-responsabilite">
+    <h2 id="cgv-responsabilite">6. Responsabilité</h2>
+    <p>
+      Nous réalisons l'analyse avec soin, selon les outils et méthodes décrits dans le rapport. Nous ne pouvons être
+      tenus responsables des décisions prises sur la seule base du rapport, ni des problèmes que les tests automatiques
+      ne permettent pas de détecter.
+    </p>
+  </section>
+
+  <section aria-labelledby="cgv-donnees">
+    <h2 id="cgv-donnees">7. Données personnelles</h2>
+    <p>Voir notre <a routerLink="/confidentialite">politique de confidentialité</a>.</p>
+  </section>
+
+  <section aria-labelledby="cgv-litiges">
+    <h2 id="cgv-litiges">8. Réclamations et litiges</h2>
+    <p>
+      Pour toute réclamation, écrivez-nous à {{ r.email }} : nous répondons sous 15 jours. Si vous êtes un
+      consommateur et que nous ne trouvons pas de solution ensemble, vous pouvez vous adresser gratuitement au Service de
+      médiation pour le consommateur (<a href="https://www.mediationconsommateur.be">www.mediationconsommateur.be</a>).
+    </p>
+    <p>Ces conditions sont régies par le droit belge. À défaut d'accord, les tribunaux de {{ r.tribunal }} sont compétents, sans préjudice des règles protectrices des consommateurs.</p>
+  </section>
+
+  <p class="maj">Dernière mise à jour : 27 septembre 2026.</p>
+</main>

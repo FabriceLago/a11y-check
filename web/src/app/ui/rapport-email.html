@@ -1,0 +1,50 @@
+<section class="bloc" aria-labelledby="titre-email">
+  <h2 id="titre-email">Recevoir ce rapport par e-mail</h2>
+
+  @if (confirmation(); as message) {
+    <p class="message-succes" role="status" #confirmationEl tabindex="-1">{{ message }}</p>
+  } @else {
+    <p class="intro">Gardez une trace de ce rapport ou transmettez-le à votre webdesigner.</p>
+    <form (submit)="envoyer($event)" novalidate>
+      <label class="libelle" for="email">Votre adresse e-mail</label>
+      <input
+        #champ
+        class="champ"
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        spellcheck="false"
+        [value]="email()"
+        (input)="saisir($any($event.target).value)"
+        [attr.aria-invalid]="erreur() ? 'true' : null"
+        [attr.aria-describedby]="erreur() ? 'email-erreur' : null"
+      />
+      @if (erreur(); as message) {
+        <p id="email-erreur" class="message-erreur" role="alert">{{ message }}</p>
+      }
+
+      @if (consentement(); as c) {
+        <label class="choix" for="conseils">
+          <input
+            id="conseils"
+            type="checkbox"
+            [checked]="conseils()"
+            (change)="conseils.set($any($event.target).checked)"
+          />
+          <span>{{ c.texte }} <span class="petit">(facultatif)</span></span>
+        </label>
+      }
+
+      <p class="petit">
+        Nous utilisons votre adresse pour vous envoyer ce rapport et, uniquement si vous cochez la case puis confirmez
+        par e-mail, nos conseils. Chaque e-mail permet de supprimer vos données en un clic.
+        <a routerLink="/confidentialite">Politique de confidentialité</a>
+      </p>
+
+      <button type="submit" class="button" [attr.aria-disabled]="envoi() ? 'true' : null">
+        {{ envoi() ? 'Envoi en cours…' : "M'envoyer ce rapport par e-mail" }}
+      </button>
+    </form>
+  }
+</section>

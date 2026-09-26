@@ -1,0 +1,133 @@
+// Shared form and message components, documented on /design-system.
+// Component files only add layout; they never restyle these.
+
+// ─── Champs ─────────────────────────────────────────────────
+.libelle {
+  display: block;
+  font-weight: 700;
+}
+.aide {
+  margin: 0 0 var(--space-2);
+  color: var(--c-text-muted);
+}
+.champ {
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+  min-height: 3.25rem;
+  margin: var(--space-2) 0;
+  padding: 0.6rem 0.9rem;
+  border: 2px solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--c-bg);
+  color: var(--c-text);
+  font: inherit;
+  // Error = colour + thicker border + message: never colour alone.
+  &[aria-invalid='true'] {
+    border: 3px solid var(--c-critique);
+  }
+}
+textarea.champ {
+  max-width: var(--measure);
+  min-height: 8rem;
+  resize: vertical;
+}
+select.champ {
+  cursor: pointer;
+}
+
+// ─── Cases à cocher et boutons radio ────────────────────────
+.choix {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: var(--measure);
+  min-height: var(--target); // the whole row is clickable: 44 px target
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  &:hover {
+    background: color-mix(in srgb, var(--c-text) 6%, transparent);
+  }
+  input {
+    flex: none;
+    width: 1.35rem;
+    height: 1.35rem;
+    margin: 0.2rem 0 0;
+    accent-color: var(--c-primary);
+  }
+}
+.groupe {
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  border: 0;
+  min-inline-size: 0; // fieldsets default to min-content width: would overflow on small screens
+  legend {
+    max-width: var(--measure);
+    margin-bottom: var(--space-2);
+    padding: 0;
+    font-weight: 700;
+  }
+  &.invalide {
+    padding-left: var(--space-3);
+    border-left: 4px solid var(--c-critique);
+  }
+}
+
+// ─── Messages ───────────────────────────────────────────────
+.message-erreur {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  max-width: var(--measure);
+  margin: var(--space-2) 0;
+  padding: var(--space-2) var(--space-3);
+  border-left: 4px solid var(--c-critique);
+  background: var(--c-critique-bg);
+  color: var(--c-critique);
+  font-weight: 700;
+}
+.message-erreur__icone {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  border-radius: 50%;
+  background: var(--c-critique);
+  color: var(--c-critique-bg);
+  font-size: var(--fs-sm);
+}
+.message-succes {
+  max-width: var(--measure);
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--c-score-haut);
+  background: var(--c-surface);
+  font-weight: 700;
+}
+.petit {
+  color: var(--c-text-muted);
+  font-size: var(--fs-sm);
+}
+
+// Error summary (GOV.UK pattern): focused on submit, links move focus to each field.
+.recap-erreurs {
+  max-width: var(--measure);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  border: 4px solid var(--c-critique);
+  border-radius: var(--radius-sm);
+  h2 {
+    font-size: var(--fs-1);
+    margin-bottom: var(--space-2);
+  }
+  ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+  a {
+    color: var(--c-critique);
+    font-weight: 700;
+  }
+}

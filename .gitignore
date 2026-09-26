@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.db
+*.db-shm
+*.db-wal
+server/data/
+server/mails/
+web/a11y-rapport.json
+.claude/
+.env

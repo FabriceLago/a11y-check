@@ -1,0 +1,27 @@
+<a class="lien-evitement" href="#contenu" (click)="allerAuContenu($event)">Aller au contenu</a>
+
+<header class="entete">
+  <div class="wrap entete__inner">
+    <a routerLink="/" class="marque">
+      <span class="marque__logo" aria-hidden="true"></span>
+      {{ appName }}
+    </a>
+  </div>
+</header>
+
+<router-outlet />
+
+<footer class="pied">
+  <div class="wrap">
+    <p>
+      Les tests automatiques ne détectent qu'une partie des problèmes d'accessibilité.
+      Cet outil ne fournit pas d'avis juridique.
+    </p>
+    <p>
+      <a routerLink="/confidentialite">Politique de confidentialité</a> ·
+      <a routerLink="/conditions">Conditions générales de vente</a> ·
+      <a routerLink="/faire-corriger">Faire corriger mon site</a> ·
+      <a routerLink="/design-system">Design system</a>
+    </p>
+  </div>
+</footer>

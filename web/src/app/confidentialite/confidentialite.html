@@ -1,0 +1,95 @@
+<main id="contenu" tabindex="-1" class="wrap page">
+  <h1>Politique de confidentialité</h1>
+
+  @if (incomplet) {
+    <p class="avertissement">
+      Page incomplète : les informations sur le responsable du traitement doivent être renseignées avant la mise en ligne.
+    </p>
+  }
+
+  <section aria-labelledby="c-resume">
+    <h2 id="c-resume">En bref</h2>
+    <ul>
+      <li>Nous ne collectons que ce qui est nécessaire pour vous rendre service.</li>
+      <li>Ce site ne dépose aucun cookie et n'utilise aucun outil de mesure d'audience.</li>
+      <li>Vous pouvez supprimer vos données en un clic, depuis chaque e-mail que nous envoyons.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="c-responsable">
+    <h2 id="c-responsable">Qui est responsable de vos données ?</h2>
+    <p>
+      {{ r.nom }}, {{ r.adresse }}, numéro d'entreprise {{ r.bce }}.
+      Pour toute question sur vos données : {{ r.email }}.
+    </p>
+  </section>
+
+  <section aria-labelledby="c-donnees">
+    <h2 id="c-donnees">Quelles données, pourquoi et combien de temps ?</h2>
+    <dl>
+      <dt>L'analyse d'un site</dt>
+      <dd>
+        L'adresse du site analysé et le résultat de l'analyse, pour produire votre rapport.
+        Base légale : l'exécution de votre demande. Conservation : 12 mois.
+        Votre adresse IP sert uniquement à limiter le nombre d'analyses par heure ; elle n'est ni enregistrée ni conservée.
+      </dd>
+
+      <dt>L'envoi du rapport par e-mail</dt>
+      <dd>
+        Votre adresse e-mail, pour vous envoyer le rapport demandé.
+        Base légale : l'exécution de votre demande. Conservation : 3 ans après notre dernier échange.
+      </dd>
+
+      <dt>Nos conseils et offres (uniquement si vous l'avez accepté)</dt>
+      <dd>
+        Votre adresse e-mail et la preuve de votre accord : le texte exact que vous avez accepté, la date de votre demande
+        et celle de votre confirmation. Base légale : votre consentement, que vous pouvez retirer à tout moment en un clic.
+        Sans confirmation par e-mail dans les 7 jours, votre demande est annulée.
+      </dd>
+
+      <dt>Le rapport complet payant</dt>
+      <dd>
+        Votre adresse e-mail, le site analysé (jusqu'à 10 pages), le montant payé et le rapport PDF, pour vous livrer le
+        rapport et gérer un éventuel remboursement. Base légale : l'exécution du contrat. Conservation : 12 mois, durée
+        pendant laquelle le rapport reste téléchargeable. Vos données de paiement (carte, compte) sont traitées
+        uniquement par Stripe : nous n'y avons jamais accès. Les factures sont conservées par Stripe pendant la durée
+        imposée par la loi comptable.
+      </dd>
+
+      <dt>Une demande de devis (« Faire corriger mon site »)</dt>
+      <dd>
+        Votre nom, votre adresse e-mail, et si vous les indiquez votre entreprise, votre téléphone, votre budget et
+        votre message, ainsi que le rapport lié à votre demande, pour vous répondre et préparer un devis. Base légale :
+        les mesures précontractuelles prises à votre demande. Conservation : 3 ans après votre demande.
+      </dd>
+
+      <dt>Le questionnaire « Votre entreprise est-elle concernée ? »</dt>
+      <dd>Vos réponses restent dans votre navigateur. Nous ne les recevons pas.</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="c-destinataires">
+    <h2 id="c-destinataires">Qui reçoit vos données ?</h2>
+    <p>
+      Personne d'autre que nous, à l'exception de nos prestataires techniques, qui agissent sur nos instructions :
+      Brevo (Sendinblue SAS, France) pour l'envoi des e-mails, Stripe (Stripe Payments Europe Ltd, Irlande) pour les
+      paiements et les factures, et {{ r.hebergeur }}. Nous ne vendons jamais vos données.
+    </p>
+  </section>
+
+  <section aria-labelledby="c-droits">
+    <h2 id="c-droits">Vos droits</h2>
+    <p>
+      Vous pouvez à tout moment accéder à vos données, les faire corriger ou supprimer, vous opposer à leur utilisation,
+      en limiter l'usage, les récupérer, ou retirer votre consentement. Le plus simple : utilisez les liens présents dans
+      chaque e-mail. Vous pouvez aussi nous écrire à {{ r.email }} ; nous répondons dans un délai d'un mois.
+    </p>
+    <p>
+      Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une plainte auprès de l'Autorité de
+      protection des données : rue de la Presse 35, 1000 Bruxelles,
+      <a href="https://www.autoriteprotectiondonnees.be">www.autoriteprotectiondonnees.be</a>.
+    </p>
+  </section>
+
+  <p class="maj">Dernière mise à jour : 27 septembre 2026.</p>
+</main>

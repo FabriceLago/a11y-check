@@ -1,0 +1,67 @@
+<main id="contenu" tabindex="-1" class="wrap page">
+  @switch (etat()) {
+    @case ('pret') {
+      <h1 #titre tabindex="-1">Votre rapport est prêt</h1>
+      <p>
+        Merci pour votre commande. Le rapport complet de <strong>{{ commande()!.site }}</strong> vous a aussi été envoyé
+        par e-mail à {{ commande()!.email }}.
+      </p>
+      <div class="actions">
+        <a class="button" [href]="commande()!.telechargement" download>Télécharger le rapport (PDF)</a>
+        <a class="button button--secondary" routerLink="/">Analyser un autre site</a>
+      </div>
+      <p>Votre facture vous est envoyée séparément par notre prestataire de paiement, Stripe.</p>
+    }
+    @case ('analyse') {
+      <h1 #titre tabindex="-1">Paiement confirmé : nous préparons votre rapport</h1>
+      <p>
+        Nous analysons les pages de {{ commande()!.site }}. Cela prend en général moins de 10 minutes. Vous pouvez fermer
+        cette page : le rapport vous sera envoyé par e-mail à {{ commande()!.email }}.
+      </p>
+      @if (progression(); as p) {
+        <label for="progression">Pages analysées</label>
+        <progress id="progression" [value]="p.fait" [max]="p.total"></progress>
+      }
+      <p role="status">
+        @if (progression(); as p) {
+          {{ p.fait }} page{{ p.fait > 1 ? 's' : '' }} analysée{{ p.fait > 1 ? 's' : '' }} sur {{ p.total }}.
+        } @else {
+          L'analyse va commencer.
+        }
+      </p>
+    }
+    @case ('echec') {
+      <h1 #titre tabindex="-1">Nous n'avons pas pu réaliser votre rapport</h1>
+      <div class="echec">
+        <p>
+          Malgré plusieurs tentatives, nous n'avons pas pu analyser {{ commande()!.site }} : le site était peut-être hors
+          ligne, trop lent ou protégé contre les robots.
+        </p>
+        <p>
+          @if (commande()!.statut === 'refunded') {
+            Vous avez été intégralement remboursé ; le montant apparaîtra sur votre compte sous 5 à 10 jours ouvrables.
+          } @else {
+            Nous allons vous rembourser intégralement et vous le confirmerons par e-mail.
+          }
+        </p>
+      </div>
+      <div class="actions"><a class="button button--secondary" routerLink="/">Retour à l'accueil</a></div>
+    }
+    @case ('erreur') {
+      <h1 #titre tabindex="-1">Nous ne retrouvons pas cette commande</h1>
+      <p role="alert">{{ erreur() }}</p>
+      <p>Si vous avez payé, pas d'inquiétude : le rapport vous est envoyé par e-mail dès qu'il est prêt.</p>
+    }
+    @default {
+      <h1 #titre tabindex="-1">Merci ! Nous confirmons votre paiement</h1>
+      <p role="status">
+        @if (etat() === 'retard') {
+          La confirmation de votre paiement prend plus de temps que prévu. Pas d'inquiétude : dès qu'elle arrive, nous
+          préparons votre rapport et vous l'envoyons par e-mail. Vous pouvez fermer cette page.
+        } @else {
+          Cela prend quelques secondes.
+        }
+      </p>
+    }
+  }
+</main>
