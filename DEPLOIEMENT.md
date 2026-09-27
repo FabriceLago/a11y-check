@@ -66,10 +66,8 @@ cd /opt/a11y-check && cp .env.example .env && chmod 600 .env && nano .env
 
 ## 5. Premier lancement
 
-**Accès à l'image.** Si le dépôt GitHub est privé, l'image l'est aussi. Deux options :
-- rendre le paquet public (GitHub → votre profil → Packages → `a11y-check` → Package settings → Change visibility),
-- ou créer un jeton GitHub (classic) avec le seul droit `read:packages`, puis sur le serveur :
-  `docker login ghcr.io -u FabriceLago` (le jeton sert de mot de passe).
+L'image `ghcr.io/fabricelago/a11y-check` est **publique** (comme le dépôt) : aucun `docker login` ni jeton
+n'est nécessaire sur le serveur.
 
 ```bash
 cd /opt/a11y-check
