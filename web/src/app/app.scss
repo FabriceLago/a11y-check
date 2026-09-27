@@ -24,8 +24,17 @@
 }
 .entete__inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
   min-height: 4.5rem;
+}
+.entete__lien {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  font-weight: 700;
 }
 .marque {
   display: inline-flex;

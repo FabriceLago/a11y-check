@@ -1,59 +1,98 @@
 <main id="contenu" tabindex="-1">
   <section class="hero">
-    <div class="wrap">
-      <h1>Votre site est-il accessible à tous&nbsp;?</h1>
-      <p class="chapeau">
-        Indiquez l'adresse de votre site. En moins d'une minute, vous recevez un rapport clair,
-        en français, avec les priorités et le temps nécessaire pour corriger.
-      </p>
+    <div class="wrap hero__grille">
+      <div class="hero__texte">
+        <h1>Votre site est-il accessible à tous&nbsp;?</h1>
+        <p class="chapeau">
+          Indiquez l'adresse de votre site. En moins d'une minute, vous recevez un rapport clair,
+          en français, avec les priorités et le temps nécessaire pour corriger.
+        </p>
 
-      <form class="formulaire" (submit)="envoyer($event)" novalidate>
-        <label for="url" class="libelle formulaire__label">Adresse de votre site</label>
-        <p id="url-aide" class="aide">Par exemple&nbsp;: www.monentreprise.be</p>
-        <div class="formulaire__ligne">
-          <input
-            #champ
-            class="champ"
-            id="url"
-            name="url"
-            type="text"
-            inputmode="url"
-            autocomplete="url"
-            autocapitalize="off"
-            spellcheck="false"
-            [value]="url()"
-            (input)="saisir($any($event.target).value)"
-            [attr.aria-invalid]="erreur() ? 'true' : null"
-            [attr.aria-describedby]="erreur() ? 'url-aide url-erreur' : 'url-aide'"
-          />
-          <button type="submit" class="button" [attr.aria-disabled]="envoi() ? 'true' : null">
-            {{ envoi() ? 'Envoi en cours…' : 'Analyser mon site' }}
-          </button>
+        <form class="formulaire" (submit)="envoyer($event)" novalidate>
+          <label for="url" class="libelle formulaire__label">Adresse de votre site</label>
+          <p id="url-aide" class="aide">Par exemple&nbsp;: www.monentreprise.be</p>
+          <div class="formulaire__ligne">
+            <input
+              #champ
+              class="champ"
+              id="url"
+              name="url"
+              type="text"
+              inputmode="url"
+              autocomplete="url"
+              autocapitalize="off"
+              spellcheck="false"
+              [value]="url()"
+              (input)="saisir($any($event.target).value)"
+              [attr.aria-invalid]="erreur() ? 'true' : null"
+              [attr.aria-describedby]="erreur() ? 'url-aide url-erreur' : 'url-aide'"
+            />
+            <button type="submit" class="button" [attr.aria-disabled]="envoi() ? 'true' : null">
+              {{ envoi() ? 'Envoi en cours…' : 'Analyser mon site' }}
+            </button>
+          </div>
+          @if (erreur(); as message) {
+            <p id="url-erreur" class="message-erreur" role="alert">
+              <span class="message-erreur__icone" aria-hidden="true">!</span>
+              {{ message }}
+            </p>
+          }
+        </form>
+
+        <p class="rassurance">Gratuit et sans inscription. Nous analysons uniquement votre page d'accueil.</p>
+      </div>
+
+      <!-- Illustration: the mock-up is hidden from screen readers, the caption describes it. -->
+      <figure class="apercu">
+        <div class="apercu__feuille" aria-hidden="true">
+          <p class="apercu__site">Exemple&nbsp;: www.boulangerie-exemple.be</p>
+          <app-score-jauge [score]="65" palier="Une base à consolider" />
+          <ul class="apercu__points">
+            <li data-niveau="critique"><span>Critique</span> Des champs de formulaire sans étiquette</li>
+            <li data-niveau="importante"><span>Importante</span> Du texte trop pâle sur fond clair</li>
+          </ul>
         </div>
-        @if (erreur(); as message) {
-          <p id="url-erreur" class="message-erreur" role="alert">
-            <span class="message-erreur__icone" aria-hidden="true">!</span>
-            {{ message }}
-          </p>
-        }
-      </form>
-
-      <p class="rassurance">Gratuit et sans inscription. Nous analysons uniquement votre page d'accueil.</p>
+        <figcaption>
+          Exemple de rapport pour un site fictif&nbsp;: un score sur 100 et les points à corriger en priorité.
+        </figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="wrap eaa" aria-labelledby="eaa-titre">
-    <h2 id="eaa-titre">Pourquoi en parler maintenant&nbsp;?</h2>
-    <p>
-      Depuis le 28 juin 2025, l'<span lang="en">European Accessibility Act</span> (EAA) demande à
-      beaucoup d'entreprises qui vendent en ligne ou proposent des services numériques aux consommateurs
-      de rendre leur site utilisable par tous, y compris par les personnes en situation de handicap.
-    </p>
-    <p>
-      Les microentreprises de services (moins de 10 personnes et un chiffre d'affaires ou un bilan annuel
-      de 2 millions d'euros maximum) en sont exemptées. Mais un site accessible reste plus agréable pour
-      tous vos clients&nbsp;: sur mobile, en plein soleil, avec une connexion lente ou simplement avec l'âge.
-    </p>
-    <p class="eaa__note">Cet outil vous aide à y voir plus clair. Il ne remplace pas un avis juridique.</p>
+  <section class="wrap etapes" aria-labelledby="etapes-titre">
+    <h2 id="etapes-titre">Comment ça marche&nbsp;?</h2>
+    <ol>
+      <li>
+        <h3>Indiquez l'adresse de votre site</h3>
+        <p>Aucune inscription&nbsp;: l'adresse suffit.</p>
+      </li>
+      <li>
+        <h3>Nous analysons votre page d'accueil</h3>
+        <p>Sur ordinateur et sur téléphone, en moins d'une minute.</p>
+      </li>
+      <li>
+        <h3>Vous recevez vos priorités</h3>
+        <p>Les points à corriger d'abord, expliqués simplement, avec le temps nécessaire et qui peut s'en charger.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="eaa" aria-labelledby="eaa-titre">
+    <div class="wrap eaa__grille">
+      <h2 id="eaa-titre">Pourquoi en parler maintenant&nbsp;?</h2>
+      <div>
+        <p>
+          Depuis le 28 juin 2025, l'<span lang="en">European Accessibility Act</span> (EAA) demande à
+          beaucoup d'entreprises qui vendent en ligne ou proposent des services numériques aux consommateurs
+          de rendre leur site utilisable par tous, y compris par les personnes en situation de handicap.
+        </p>
+        <p>
+          Les microentreprises de services (moins de 10 personnes et un chiffre d'affaires ou un bilan annuel
+          de 2 millions d'euros maximum) en sont exemptées. Mais un site accessible reste plus agréable pour
+          tous vos clients&nbsp;: sur mobile, en plein soleil, avec une connexion lente ou simplement avec l'âge.
+        </p>
+        <p class="eaa__note">Cet outil vous aide à y voir plus clair. Il ne remplace pas un avis juridique.</p>
+      </div>
+    </div>
   </section>
 </main>

@@ -1,5 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { afterNextRender, Component, computed, effect, ElementRef, inject, Injector, input, signal, untracked, viewChild } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  Injector,
+  input,
+  signal,
+  untracked,
+  viewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { messageErreur, nomDeSite, Rapport, ScanApi } from '../api';
 
@@ -39,31 +51,72 @@ export function validerDevis(f: Formulaire): Record<string, string> {
   const erreurs: Record<string, string> = {};
   if (!f.nom.trim()) erreurs['devis-nom'] = 'Indiquez votre nom.';
   if (!f.email.trim()) erreurs['devis-email'] = 'Indiquez votre adresse e-mail.';
-  else if (!EMAIL_RE.test(f.email.trim())) erreurs['devis-email'] = 'Cette adresse e-mail ne semble pas valide. Exemple : prenom@entreprise.be';
+  else if (!EMAIL_RE.test(f.email.trim()))
+    erreurs['devis-email'] =
+      'Cette adresse e-mail ne semble pas valide. Exemple : prenom@entreprise.be';
   if (!f.site.trim()) erreurs['devis-site'] = "Indiquez l'adresse de votre site.";
-  if (!f.besoins.length) erreurs['devis-besoins'] = 'Choisissez au moins une option dans « Ce que vous souhaitez ».';
+  if (!f.besoins.length)
+    erreurs['devis-besoins'] = 'Choisissez au moins une option dans « Ce que vous souhaitez ».';
   return erreurs;
 }
 
 /** Server field names → form field ids. */
-const CHAMPS_SERVEUR: Record<string, string> = { nom: 'devis-nom', email: 'devis-email', site: 'devis-site', besoins: 'devis-besoins' };
+const CHAMPS_SERVEUR: Record<string, string> = {
+  nom: 'devis-nom',
+  email: 'devis-email',
+  site: 'devis-site',
+  besoins: 'devis-besoins',
+};
 
 @Component({
   selector: 'app-devis',
   imports: [RouterLink],
   templateUrl: './devis.html',
   styles: `
-    .page { padding-top: var(--space-6); }
-    .chapeau { max-width: var(--measure); font-size: var(--fs-1); color: var(--c-text-muted); }
-    .lie { max-width: var(--measure); padding: var(--space-3) var(--space-4); border-left: 4px solid var(--c-accent); background: var(--c-surface); }
-    form { margin-top: var(--space-5); }
-    .champs { display: grid; gap: 0 var(--space-5); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); max-width: 44rem; }
-    .champs > div { margin-bottom: var(--space-3); }
-    .groupe > .groupe-titre { font-size: var(--fs-1); }
-    .facultatif { font-weight: 400; color: var(--c-text-muted); }
+    .page {
+      padding-top: var(--space-6);
+    }
+    .chapeau {
+      max-width: var(--measure);
+      font-size: var(--fs-1);
+      color: var(--c-text-muted);
+    }
+    .lie {
+      max-width: var(--measure);
+      padding: var(--space-3) var(--space-4);
+      border-left: 4px solid var(--c-accent);
+      background: var(--c-surface);
+    }
+    form {
+      margin-top: var(--space-5);
+    }
+    .champs {
+      display: grid;
+      gap: 0 var(--space-5);
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+      max-width: 44rem;
+    }
+    .champs > div {
+      margin-bottom: var(--space-3);
+    }
+    .groupe > .groupe-titre {
+      font-size: var(--fs-1);
+    }
+    .facultatif {
+      font-weight: 400;
+      color: var(--c-text-muted);
+    }
     /* Honeypot: off-screen, not display:none (bots skip hidden fields). */
-    .piege { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-    .merci { margin-top: var(--space-5); }
+    .piege {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .merci {
+      margin-top: var(--space-5);
+    }
   `,
 })
 export class Devis {
@@ -94,7 +147,9 @@ export class Devis {
 
   protected readonly rapport = signal<Rapport | null>(null);
   protected readonly erreurs = signal<Record<string, string>>({});
-  protected readonly listeErreurs = computed(() => Object.entries(this.erreurs()).map(([id, message]) => ({ id, message })));
+  protected readonly listeErreurs = computed(() =>
+    Object.entries(this.erreurs()).map(([id, message]) => ({ id, message })),
+  );
   protected readonly erreurGenerale = signal<string | null>(null);
   protected readonly envoi = signal(false);
   protected readonly envoye = signal<string | null>(null);
@@ -139,7 +194,12 @@ export class Devis {
     event.preventDefault();
     if (this.envoi()) return;
     this.erreurGenerale.set(null);
-    const erreurs = validerDevis({ nom: this.nom(), email: this.email(), site: this.site(), besoins: this.besoins() });
+    const erreurs = validerDevis({
+      nom: this.nom(),
+      email: this.email(),
+      site: this.site(),
+      besoins: this.besoins(),
+    });
     if (Object.keys(erreurs).length) return this.afficherErreurs(erreurs);
 
     this.envoi.set(true);
@@ -166,9 +226,16 @@ export class Devis {
         },
         error: (e) => {
           this.envoi.set(false);
-          const champs = e instanceof HttpErrorResponse ? (e.error?.champs as Record<string, string> | undefined) : undefined;
+          const champs =
+            e instanceof HttpErrorResponse
+              ? (e.error?.champs as Record<string, string> | undefined)
+              : undefined;
           if (champs) {
-            this.afficherErreurs(Object.fromEntries(Object.entries(champs).map(([k, v]) => [CHAMPS_SERVEUR[k] ?? k, v])));
+            this.afficherErreurs(
+              Object.fromEntries(
+                Object.entries(champs).map(([k, v]) => [CHAMPS_SERVEUR[k] ?? k, v]),
+              ),
+            );
           } else {
             this.erreurGenerale.set(messageErreur(e));
             this.afficherErreurs({});

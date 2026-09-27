@@ -28,12 +28,16 @@ const PAIRES: Paire[] = [
 export const EXEMPLE_PROBLEME: Probleme = {
   id: 'image-alt',
   titre: "Certaines images n'ont pas de description",
-  pourquoi: "Une personne aveugle qui utilise un lecteur d'écran ne saura pas ce que montre l'image.",
+  pourquoi:
+    "Une personne aveugle qui utilise un lecteur d'écran ne saura pas ce que montre l'image.",
   touche: [{ id: 'aveugles', label: 'Personnes aveugles' }],
   priorite: 'Critique',
   effort: '15 min',
   quiCorrige: 'Vous-même, dans votre outil de gestion du site',
-  etapes: ['Repérez les images listées dans le rapport.', 'Décrivez en une phrase ce qu’elles montrent.'],
+  etapes: [
+    'Repérez les images listées dans le rapport.',
+    'Décrivez en une phrase ce qu’elles montrent.',
+  ],
   cms: { wordpress: 'Médias → cliquez sur l’image → champ « Texte alternatif ».' },
   wcag: ['1.1.1'],
   occurrences: 4,
@@ -91,7 +95,13 @@ export class DesignSystem {
     const valeur = (token: string) => styles.getPropertyValue(token).trim();
     return PAIRES.map((p) => {
       const r = ratio(valeur(p.texte), valeur(p.fond));
-      return { ...p, valeurTexte: valeur(p.texte), valeurFond: valeur(p.fond), ratio: r, niveau: r === null ? '—' : niveau(r, p.nonTexte) };
+      return {
+        ...p,
+        valeurTexte: valeur(p.texte),
+        valeurFond: valeur(p.fond),
+        ratio: r,
+        niveau: r === null ? '—' : niveau(r, p.nonTexte),
+      };
     });
   });
 

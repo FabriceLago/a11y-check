@@ -60,12 +60,14 @@
       @if (reste(); as reste) {
         <p class="reste">{{ reste }}</p>
       }
-      <app-offre-pdf class="bloc-suivant" [scanId]="id()" />
-      <section class="bloc-suivant corriger" aria-labelledby="titre-corriger">
-        <h2 id="titre-corriger">Pas le temps de tout corriger&nbsp;?</h2>
-        <p>Nous pouvons nous en charger, ou accompagner votre webdesigner. Réponse sous 2 jours ouvrables, sans engagement.</p>
-        <a class="button button--secondary" routerLink="/faire-corriger" [queryParams]="{ scan: id() }">Faire corriger mon site</a>
-      </section>
+      <div class="bloc-suivant suite">
+        <app-offre-pdf [scanId]="id()" />
+        <section class="corriger" aria-labelledby="titre-corriger">
+          <h2 id="titre-corriger">Pas le temps de tout corriger&nbsp;?</h2>
+          <p>Nous pouvons nous en charger, ou accompagner votre webdesigner. Réponse sous 2 jours ouvrables, sans engagement.</p>
+          <a class="button button--secondary" routerLink="/faire-corriger" [queryParams]="{ scan: id() }">Faire corriger mon site</a>
+        </section>
+      </div>
       <app-questionnaire-eaa class="bloc-suivant" />
       <app-rapport-email class="bloc-suivant" [scanId]="id()" />
     </article>

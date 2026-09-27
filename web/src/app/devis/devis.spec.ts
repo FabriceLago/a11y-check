@@ -12,7 +12,14 @@ describe('validerDevis', () => {
       'devis-site',
       'devis-besoins',
     ]);
-    expect(validerDevis({ nom: 'Marie', email: 'marie@exemple.be', site: 'exemple.be', besoins: ['audit'] })).toEqual({});
+    expect(
+      validerDevis({
+        nom: 'Marie',
+        email: 'marie@exemple.be',
+        site: 'exemple.be',
+        besoins: ['audit'],
+      }),
+    ).toEqual({});
   });
 });
 
@@ -44,20 +51,34 @@ describe('Devis', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
+    });
     http = TestBed.inject(HttpTestingController);
   });
   afterEach(() => http.verify());
 
   it('labels every field and marks optional ones', async () => {
     await render();
-    for (const id of ['devis-nom', 'devis-entreprise', 'devis-email', 'devis-telephone', 'devis-site', 'devis-outil', 'devis-delai', 'devis-budget', 'devis-message']) {
+    for (const id of [
+      'devis-nom',
+      'devis-entreprise',
+      'devis-email',
+      'devis-telephone',
+      'devis-site',
+      'devis-outil',
+      'devis-delai',
+      'devis-budget',
+      'devis-message',
+    ]) {
       expect(el.querySelector(`label[for="${id}"]`), id).not.toBeNull();
     }
     expect(el.querySelector('label[for="devis-budget"]')?.textContent).toContain('facultatif');
     expect(el.querySelector<HTMLInputElement>('#devis-email')!.autocomplete).toBe('email');
     expect(el.querySelector<HTMLSelectElement>('#devis-budget')!.value).toBe('inconnu');
-    expect(el.querySelector('fieldset#devis-besoins legend')?.textContent).toContain('Ce que vous souhaitez');
+    expect(el.querySelector('fieldset#devis-besoins legend')?.textContent).toContain(
+      'Ce que vous souhaitez',
+    );
   });
 
   it('shows a focused error summary whose links lead to the fields', async () => {
@@ -66,8 +87,12 @@ describe('Devis', () => {
     const recap = el.querySelector<HTMLElement>('.recap-erreurs')!;
     expect(document.activeElement).toBe(recap);
     expect(recap.querySelector('h2')?.textContent).toContain('4 points sont à corriger');
-    expect(el.querySelector('#devis-nom')?.getAttribute('aria-describedby')).toBe('devis-nom-erreur');
-    expect(el.querySelector('#devis-besoins')?.getAttribute('aria-describedby')).toContain('devis-besoins-erreur');
+    expect(el.querySelector('#devis-nom')?.getAttribute('aria-describedby')).toBe(
+      'devis-nom-erreur',
+    );
+    expect(el.querySelector('#devis-besoins')?.getAttribute('aria-describedby')).toContain(
+      'devis-besoins-erreur',
+    );
 
     recap.querySelector<HTMLAnchorElement>('a[href="#devis-email"]')!.click();
     expect(document.activeElement).toBe(el.querySelector('#devis-email'));
@@ -78,12 +103,18 @@ describe('Devis', () => {
   it('sends the request, links the report, then confirms and focuses the confirmation', async () => {
     await render('scan-1');
     http.expectOne('/api/scan/scan-1').flush({
-      id: 'scan-1', url: 'https://exemple.be/', status: 'done', steps: [], position: 0,
+      id: 'scan-1',
+      url: 'https://exemple.be/',
+      status: 'done',
+      steps: [],
+      position: 0,
       report: { finalUrl: 'https://www.exemple.be/', score: 65, totalProblemes: 7 },
     });
     await fixture.whenStable();
     expect(el.querySelector('.lie')?.textContent).toContain('exemple.be');
-    expect(el.querySelector<HTMLInputElement>('#devis-site')!.value).toBe('https://www.exemple.be/');
+    expect(el.querySelector<HTMLInputElement>('#devis-site')!.value).toBe(
+      'https://www.exemple.be/',
+    );
 
     saisir('devis-nom', 'Marie Dupont');
     saisir('devis-email', 'marie@exemple.be');
@@ -91,8 +122,14 @@ describe('Devis', () => {
     await envoyer();
     const req = http.expectOne('/api/devis');
     expect(req.request.body).toMatchObject({
-      nom: 'Marie Dupont', email: 'marie@exemple.be', site: 'https://www.exemple.be/',
-      besoins: ['critiques'], budget: 'inconnu', delai: 'flexible', outil: 'inconnu', scanId: 'scan-1',
+      nom: 'Marie Dupont',
+      email: 'marie@exemple.be',
+      site: 'https://www.exemple.be/',
+      besoins: ['critiques'],
+      budget: 'inconnu',
+      delai: 'flexible',
+      outil: 'inconnu',
+      scanId: 'scan-1',
     });
     expect(req.request.body.siteWeb).toBeUndefined();
     req.flush({ message: 'Merci ! Nous vous répondons sous 2 jours ouvrables.' });
@@ -108,7 +145,9 @@ describe('Devis', () => {
     saisir('devis-site', 'exemple.be');
     cocher('audit');
     await envoyer();
-    http.expectOne('/api/devis').flush({ champs: { email: 'Adresse refusée.' } }, { status: 400, statusText: 'Bad Request' });
+    http
+      .expectOne('/api/devis')
+      .flush({ champs: { email: 'Adresse refusée.' } }, { status: 400, statusText: 'Bad Request' });
     await fixture.whenStable();
     expect(el.querySelector('#devis-email-erreur')?.textContent).toContain('Adresse refusée.');
   });

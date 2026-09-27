@@ -1,6 +1,7 @@
 import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { messageErreur, ScanApi } from '../api';
+import { ScoreJauge } from '../ui/score-jauge';
 
 /** Light check only: the server does the real (security) validation. */
 export function validerUrl(url: string): string | null {
@@ -13,6 +14,7 @@ export function validerUrl(url: string): string | null {
 
 @Component({
   selector: 'app-accueil',
+  imports: [ScoreJauge],
   templateUrl: './accueil.html',
   styleUrl: './accueil.scss',
 })

@@ -48,6 +48,7 @@ import { messageErreur, Offre, REDIRECTION, ScanApi } from '../api';
       display: block;
     }
     .offre {
+      height: 100%;
       padding: var(--space-5);
       border: 2px solid var(--c-accent);
       border-radius: var(--radius);
