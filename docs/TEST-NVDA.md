@@ -64,12 +64,26 @@ Ouvrez la page d'accueil et laissez NVDA lire.
 | 1.1 | Chargez la page | Le titre de l'onglet est lu : « Vérifiez l'accessibilité de votre site – … » |
 | 1.2 | `Tab` une fois | « Aller au contenu, lien ». Le lien apparaît aussi à l'écran |
 | 1.3 | `Entrée` sur ce lien | Le focus arrive au début du contenu (la lecture continue par le titre principal), sans recharger la page |
-| 1.4 | `NVDA+F7`, onglet Titres | Titre niveau 1 « Votre site est-il accessible à tous ? », niveau 2 « Pourquoi en parler maintenant ? ». Rien d'autre |
-| 1.5 | `D` plusieurs fois | Au moins 3 régions : bannière (en-tête), contenu principal, pied de page |
-| 1.6 | `F` jusqu'au champ | « Adresse de votre site », « modifier » (ou « zone de texte »), suivi de « Par exemple : www.monentreprise.be » |
-| 1.7 | Dans le champ vide, `Entrée` | « Indiquez l'adresse de votre site. » est annoncé ; le focus reste dans le champ, signalé « non valide » (ou « invalide ») |
-| 1.8 | Tapez une lettre | Le message d'erreur disparaît ; le champ n'est plus annoncé comme non valide |
-| 1.9 | Lisez la suite (`Flèche bas`) | « European Accessibility Act » est prononcé à l'anglaise (le passage est marqué en anglais) |
+| 1.4 | `NVDA+F7`, onglet Titres | Niveau 1 « Votre site est-il accessible à tous ? » ; niveau 2 « Comment ça marche ? » avec 3 titres niveau 3 (les étapes) ; niveau 2 « Pourquoi en parler maintenant ? ». Rien d'autre |
+| 1.5 | Écoutez un titre (`H`) | Il est lu normalement, comme une phrase, **pas épelé** lettre par lettre, bien qu'il soit affiché en capitales |
+| 1.6 | `D` plusieurs fois | Au moins 4 régions : bannière (en-tête), navigation « Raccourcis », contenu principal, pied de page |
+| 1.7 | `F` jusqu'au champ | « Adresse de votre site », « modifier » (ou « zone de texte »), suivi de « Par exemple : www.monentreprise.be » |
+| 1.8 | Dans le champ vide, `Entrée` | « Indiquez l'adresse de votre site. » est annoncé ; le focus reste dans le champ, signalé « non valide » (ou « invalide ») |
+| 1.9 | Tapez une lettre | Le message d'erreur disparaît ; le champ n'est plus annoncé comme non valide |
+| 1.10 | Lisez après le formulaire (`Flèche bas`) | L'exemple de rapport n'est lu **que par sa légende** : « Exemple de rapport pour un site fictif : un score sur 100… ». Pas de « 65 », « Critique » ou « boulangerie-exemple » isolés |
+| 1.11 | Lisez la suite (`Flèche bas`) | « European Accessibility Act » est prononcé à l'anglaise (le passage est marqué en anglais) |
+
+### Bouton de thème (en-tête, sur n'importe quelle page)
+
+Le site s'ouvre en thème sombre. Le bouton en haut à droite permet de passer en clair ; le choix est mémorisé
+dans le navigateur.
+
+| # | Faites | Attendu |
+|---|---|---|
+| 1.12 | `B` jusqu'au bouton | « Thème clair, bouton ». Le symbole ☀ n'est **pas** lu |
+| 1.13 | `Espace` | La page passe en clair. Le focus reste sur le bouton, qui s'appelle maintenant « Thème sombre » (si NVDA ne le redit pas tout seul, `NVDA+Tab` relit l'élément actif) |
+| 1.14 | `F5` pour recharger, puis `B` | Le thème clair est conservé ; le bouton dit toujours « Thème sombre » |
+| 1.15 | `Espace` sur le bouton | Retour au thème sombre ; le bouton redevient « Thème clair » |
 
 ## Parcours 2 — Analyse en cours
 
@@ -91,8 +105,8 @@ L'analyse se termine d'elle-même.
 |---|---|---|
 | 3.1 | Attendez la fin | « Résultat pour fr.wikipedia.org », titre niveau 1 : le focus y est placé ; l'onglet devient « Résultat : …/100 – … » |
 | 3.2 | `Flèche bas` quelques fois | La date, le lien vers la page analysée, puis **« Score : 65 sur 100 »** (en un seul morceau, « 65 » et « sur » bien séparés), puis le palier (« Une base à consolider »…) |
-| 3.3 | Idem | L'anneau de la jauge n'est **pas** annoncé (image décorative) ; les icônes « ! », « ◐ », « ✓ » non plus |
-| 3.4 | Continuez | La phrase de synthèse, le temps de correction estimé |
+| 3.3 | Idem | Le cadran de la jauge n'est **pas** annoncé (image décorative) ; les icônes « ! », « ◐ », « ✓ » non plus |
+| 3.4 | Continuez | La phrase de synthèse, puis une liste de chiffres clés, chacun suivi de sa valeur : « Temps de correction estimé », « Points prioritaires », « Problèmes relevés », « Points à vérifier vous-même » |
 | 3.5 | `H` | « À savoir avant de lire ce rapport » : les mentions sont lues **avant** la liste des problèmes |
 | 3.6 | `H` | « Les 5 points à corriger en priorité » (ou le nombre réel) ; `L` annonce une liste de 5 éléments |
 | 3.7 | `H` sur chaque carte | Titre niveau 3 = le problème (ex. « Certains champs de formulaire n'ont pas d'étiquette ») |
@@ -151,6 +165,7 @@ Confidentialité, Conditions générales, Design system (liens du pied de page).
 | 7.2 | Design system : `T` | Le tableau des contrastes a une légende et des en-têtes de colonnes ; `Ctrl+Alt+Flèche droite` annonce l'en-tête de chaque colonne |
 | 7.3 | Design system : `Tab` | La zone du tableau (qui défile sur petit écran) reçoit le focus avec un nom |
 | 7.4 | Les codes d'exemple | Lus sans provoquer de confusion (ils sont affichés comme du texte) |
+| 7.5 | Design system : bouton de thème, puis `T` | La légende du tableau suit le thème : « … (thème clair) » puis « … (thème sombre) », et les ratios changent |
 
 ## Parcours 8 — Suivi de commande (sans paiement)
 
@@ -202,4 +217,4 @@ Copiez ce tableau dans un nouveau fichier (ou un ticket) à chaque session de te
 
 - **VoiceOver** (Mac, iPhone) : les mêmes parcours s'appliquent ; sur iPhone, testez au moins les parcours 1 à 3,
   l'essentiel des PME consultant leur rapport sur téléphone.
-- **Zoom et clavier seul** : voir la checklist du README (zoom 200 % et 400 %, animations réduites, mode sombre).
+- **Zoom et clavier seul** : voir la checklist du README (zoom 200 % et 400 %, animations réduites, thème clair).
