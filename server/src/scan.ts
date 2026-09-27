@@ -18,6 +18,8 @@ let browserPromise: Promise<Browser> | undefined;
 export function getBrowser(): Promise<Browser> {
   browserPromise ??= chromium
     .launch({
+      // In Docker (CHROMIUM_SANDBOX=1): Chromium's own sandbox around pages from unknown sites.
+      chromiumSandbox: process.env.CHROMIUM_SANDBOX === '1',
       args: [
         // Safety net: anything that escapes page.route hits a dead proxy.
         // <-loopback> stops Chromium from bypassing the proxy for localhost.

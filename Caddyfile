@@ -1,0 +1,25 @@
+# HTTPS is automatic (Let's Encrypt) as soon as DOMAINE points to this server.
+# DOMAINE=localhost gives a locally trusted certificate for testing.
+{$DOMAINE} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		# The app loads nothing from other sites. Inline styles: Angular component styles and the
+		# e-mail link pages. No inline script at all (critical CSS inlining is disabled in angular.json).
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+		-Server
+	}
+
+	reverse_proxy app:3000
+}
+
+# www. → the bare domain: one canonical address. Needs a DNS record for www too
+# (otherwise remove this block, or Caddy will keep retrying its certificate).
+www.{$DOMAINE} {
+	redir https://{$DOMAINE}{uri} permanent
+}

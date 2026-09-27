@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { DatabaseSync } from 'node:sqlite';
+import { backup, DatabaseSync } from 'node:sqlite';
 import { fileURLToPath } from 'node:url';
 import { drizzle } from 'drizzle-orm/sqlite-proxy';
 import { migrate } from 'drizzle-orm/sqlite-proxy/migrator';
@@ -35,6 +35,8 @@ export function openDb(file: string) {
   return {
     db,
     close: () => sqlite.close(),
+    /** Online backup: a consistent copy even while the app is writing. */
+    sauvegarder: (dest: string) => backup(sqlite, dest),
     migrate: () =>
       migrate(db, async (queries) => {
         sqlite.exec('BEGIN');

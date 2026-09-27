@@ -1,13 +1,17 @@
 import { randomBytes, randomUUID } from 'node:crypto';
+import { existsSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import fastifyStatic from '@fastify/static';
 import { pathToFileURL } from 'node:url';
 import rateLimit from '@fastify/rate-limit';
-import { and, eq, inArray, lt } from 'drizzle-orm';
+import { and, eq, inArray, lt, sql } from 'drizzle-orm';
 import Fastify, { type FastifyInstance, type FastifyReply } from 'fastify';
 import PQueue from 'p-queue';
 import type Stripe from 'stripe';
 import { commandes, type CommandesDeps } from './commandes.js';
 import { openDb, type Db } from './db.js';
 import { devisRoutes } from './devis.js';
+import { sauvegarderBase } from './sauvegardes.js';
 import { creerStripe } from './paiement.js';
 import { createMailer, type SendMail } from './mailer.js';
 import { buildReport, freeView } from './report.js';
@@ -49,6 +53,9 @@ export type ServerOptions = {
   retryMs?: number;
   analyser?: CommandesDeps['analyser'];
   pdf?: CommandesDeps['pdf'];
+  /** Deployment: daily SQLite backups here (BACKUP_DIR), built Angular app served from here (WEB_DIR). */
+  backupDir?: string;
+  webDir?: string;
 };
 
 const ACTIONS = {
@@ -90,9 +97,11 @@ export async function buildServer({
   retryMs,
   analyser,
   pdf,
+  backupDir = process.env.BACKUP_DIR,
+  webDir = process.env.WEB_DIR,
 }: ServerOptions = {}): Promise<App> {
   const app = Fastify({ logger, trustProxy: process.env.TRUST_PROXY === '1' });
-  const { db, close, migrate } = openDb(dbFile);
+  const { db, close, migrate, sauvegarder } = openDb(dbFile);
   await migrate();
   // A restart kills the browser: scans that were in progress cannot resume.
   await db.update(scans).set({ status: 'error', error: "L'analyse a été interrompue. Relancez-la." }).where(inArray(scans.status, ['queued', 'running']));
@@ -136,7 +145,19 @@ export async function buildServer({
   purgeurs.push(cmd.purger);
   const dev = await devisRoutes(app, { db, sendMail, publicUrl, now, adminEmail });
   purgeurs.push(dev.purger);
+  // Daily tasks run at start-up then every 24 h: purges above, then the backup.
+  if (backupDir) purgeurs.push((t) => sauvegarderBase(sauvegarder, backupDir, t));
   await purge();
+
+  // Docker healthcheck: the process answers AND the database responds.
+  app.get('/api/sante', async (_req, reply) => {
+    try {
+      await db.run(sql`select 1`);
+      return { ok: true };
+    } catch {
+      return reply.code(503).send({ ok: false });
+    }
+  });
   const purgeTimer = setInterval(() => purge().catch((e) => app.log.error(e)), DAY).unref();
 
   // ─── Scans ──────────────────────────────────────────────────
@@ -318,11 +339,35 @@ export async function buildServer({
     return envoyerPage(reply, page('Merci, votre inscription est confirmée', `<p>Vous recevrez nos conseils 1 à 2 fois par mois. Chaque e-mail contient un lien pour vous désinscrire.</p>${retour}`));
   });
 
+  // Production: the same server serves the built Angular app (same origin, no CORS, no proxy).
+  if (webDir && existsSync(join(webDir, 'index.html'))) {
+    await app.register(fastifyStatic, {
+      root: resolve(webDir),
+      setHeaders: (res, fichier) => {
+        // Hashed bundles never change; index.html must always be revalidated to pick up new releases.
+        res.header('cache-control', /-[A-Z0-9]{8}\.(js|css)$/.test(fichier) ? 'public, max-age=31536000, immutable' : 'no-cache');
+      },
+    });
+    // Angular routes (/analyse/…, /faire-corriger…) are client-side: serve index.html; unknown /api stays a 404.
+    app.setNotFoundHandler((req, reply) =>
+      req.method === 'GET' && !req.url.startsWith('/api/')
+        ? reply.header('cache-control', 'no-cache').sendFile('index.html')
+        : reply.code(404).send({ error: 'not_found', message: 'Introuvable.' }),
+    );
+  }
+
   // Cast: TS unwraps thenables returned from async functions (runtime is fine, see App).
   return Object.assign(app, { db, purge }) as unknown as Awaited<App> & App;
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const app = await buildServer({ dbFile: process.env.DB_FILE ?? 'data/a11y.db' });
+  // `docker stop` sends SIGTERM: finish running scans, close the browser and the database cleanly.
+  for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+    process.once(signal, () => {
+      app.log.info({ signal }, 'arrêt en cours');
+      app.close().then(() => process.exit(0), () => process.exit(1));
+    });
+  }
   await app.listen({ port: Number(process.env.PORT ?? 3000), host: process.env.HOST ?? '127.0.0.1' });
 }

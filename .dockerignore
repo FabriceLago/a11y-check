@@ -1,0 +1,11 @@
+**/node_modules
+**/dist
+**/.angular
+server/data
+server/mails
+web/a11y-rapport.json
+.git
+.github
+.claude
+.env
+*.md

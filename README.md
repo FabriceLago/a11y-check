@@ -32,6 +32,11 @@ cd web && npm run audit:a11y:live     # idem sur l'app lancée (API réelle, vra
 L'intégration continue (`.github/workflows/ci.yml`, GitHub Actions) lance ces trois volets à chaque push.
 **Une seule violation axe fait échouer le build** ; le rapport JSON de l'audit est publié comme artefact.
 
+## Déploiement
+
+Docker Compose sur un VPS (Caddy pour le HTTPS, image publiée par la CI sur `ghcr.io/fabricelago/a11y-check`,
+sauvegardes quotidiennes de la base, bac à sable de Chromium actif) : voir **[DEPLOIEMENT.md](DEPLOIEMENT.md)**.
+
 ## Pages
 
 | Adresse | Rôle |
@@ -138,5 +143,3 @@ est bon (arbre de structure, langue, signets, textes alternatifs) mais n'est pas
 Chromium n'accède jamais directement au réseau : chaque requête passe par un relais Node
 qui valide l'URL, suit les redirections lui-même et vérifie l'IP **au moment de la connexion**
 (anti DNS-rebinding). Filet de sécurité : Chromium est lancé avec un proxy inexistant.
-#   a 1 1 y - c h e c k  
- 
