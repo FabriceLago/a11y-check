@@ -15,7 +15,11 @@ const PAIRES: Paire[] = [
   { usage: 'Texte secondaire sur fond de carte', texte: '--c-text-muted', fond: '--c-surface' },
   { usage: 'Liens', texte: '--c-link', fond: '--c-bg' },
   { usage: 'Texte de bouton principal', texte: '--c-on-primary', fond: '--c-primary' },
-  { usage: 'Texte secondaire dans un bloc de carte', texte: '--c-text-muted', fond: '--c-surface-2' },
+  {
+    usage: 'Texte secondaire dans un bloc de carte',
+    texte: '--c-text-muted',
+    fond: '--c-surface-2',
+  },
   { usage: 'Liens sur fond de carte', texte: '--c-link', fond: '--c-surface' },
   { usage: 'Texte d’accent', texte: '--c-accent', fond: '--c-surface' },
   { usage: 'Priorité « Critique » et erreurs', texte: '--c-critique', fond: '--c-critique-bg' },

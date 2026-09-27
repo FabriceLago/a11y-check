@@ -3,21 +3,21 @@ import { Component, computed, input } from '@angular/core';
 type Niveau = 'bas' | 'moyen' | 'haut';
 const ICONES: Record<Niveau, string> = { bas: '!', moyen: '◐', haut: '✓' };
 const CIRCONFERENCE = 2 * Math.PI * 52; // r = 52 → ≈ 327
-const ARC = CIRCONFERENCE * 0.75; // 270° dial, open at the bottom
+const ARC = CIRCONFERENCE / 2; // half dial, like the mock-up's "momentum" gauge
 
 /** The ring is decorative; the score and its label are plain text (never colour alone). */
 @Component({
   selector: 'app-score-jauge',
   template: `
     <div class="jauge" [attr.data-niveau]="niveau()">
-      <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+      <svg viewBox="0 0 120 68" aria-hidden="true" focusable="false">
         <circle
           class="piste"
           cx="60"
           cy="60"
           r="52"
           [attr.stroke-dasharray]="piste"
-          transform="rotate(135 60 60)"
+          transform="rotate(180 60 60)"
         />
         <circle
           class="arc"
@@ -25,7 +25,7 @@ const ARC = CIRCONFERENCE * 0.75; // 270° dial, open at the bottom
           cy="60"
           r="52"
           [attr.stroke-dasharray]="dash()"
-          transform="rotate(135 60 60)"
+          transform="rotate(180 60 60)"
         />
       </svg>
       <p class="valeur">
@@ -48,13 +48,14 @@ const ARC = CIRCONFERENCE * 0.75; // 270° dial, open at the bottom
     }
     .jauge {
       position: relative;
-      width: 11rem;
-      aspect-ratio: 1;
+      width: 13rem;
+      aspect-ratio: 120 / 68;
     }
     svg {
       display: block;
       width: 100%;
       height: 100%;
+      overflow: visible; /* the arc's glow must not be clipped into a rectangle */
     }
     circle {
       fill: none;
@@ -67,7 +68,7 @@ const ARC = CIRCONFERENCE * 0.75; // 270° dial, open at the bottom
       stroke-linecap: round;
     }
     .arc {
-      animation: remplir 900ms ease-out;
+      animation: remplir 1200ms var(--ease) 200ms both;
       filter: drop-shadow(0 0 5px var(--c-niveau));
     }
     @keyframes remplir {
@@ -89,12 +90,12 @@ const ARC = CIRCONFERENCE * 0.75; // 270° dial, open at the bottom
     }
     .valeur {
       position: absolute;
-      inset: 0;
+      inset: auto 0 0;
       margin: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       line-height: 1;
     }
     .nombre {

@@ -6,13 +6,16 @@
       <span class="marque__logo" aria-hidden="true"></span>
       {{ appName }}
     </a>
-    <nav class="entete__actions" aria-label="Raccourcis">
-      <a routerLink="/faire-corriger" class="entete__lien">Faire corriger mon site</a>
-      <button type="button" class="theme" (click)="theme.basculer()">
-        <span class="theme__icone" aria-hidden="true">{{ theme.actuel() === 'sombre' ? '☀' : '☾' }}</span>
-        {{ theme.actuel() === 'sombre' ? 'Thème clair' : 'Thème sombre' }}
-      </button>
+    <!-- Pill tabs as in the mock-up: the current page is green and announced as such (aria-current). -->
+    <nav class="onglets" aria-label="Menu principal">
+      <a routerLink="/" routerLinkActive="actif" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Analyser un site</a>
+      <a routerLink="/faire-corriger" routerLinkActive="actif" ariaCurrentWhenActive="page">Faire corriger mon site</a>
+      <a routerLink="/design-system" routerLinkActive="actif" ariaCurrentWhenActive="page">Design system</a>
     </nav>
+    <button type="button" class="theme" (click)="theme.basculer()">
+      <span class="theme__icone" aria-hidden="true">{{ theme.actuel() === 'sombre' ? '☀' : '☾' }}</span>
+      {{ theme.actuel() === 'sombre' ? 'Thème clair' : 'Thème sombre' }}
+    </button>
   </div>
 </header>
 

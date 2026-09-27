@@ -9,7 +9,7 @@ import { messageErreur, Offre, REDIRECTION, ScanApi } from '../api';
   template: `
     @if (offre(); as o) {
       @if (o.disponible) {
-        <section class="offre" aria-labelledby="titre-offre">
+        <section class="offre verre" aria-labelledby="titre-offre">
           <h2 id="titre-offre">Recevoir le rapport complet</h2>
           <ul>
             <li>Jusqu'à 10 pages de votre site analysées</li>
@@ -47,13 +47,11 @@ import { messageErreur, Offre, REDIRECTION, ScanApi } from '../api';
     :host {
       display: block;
     }
+    /* Main offer: glass tile with a green halo. */
     .offre {
       height: 100%;
-      padding: var(--space-5);
-      border: 1px solid var(--c-accent);
-      border-radius: var(--radius);
-      background: var(--c-surface);
-      box-shadow: 0 0 32px var(--c-glow);
+      border-color: var(--c-primary);
+      box-shadow: 0 12px 40px var(--c-glow);
     }
     ul {
       padding-left: 1.2em;

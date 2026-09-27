@@ -60,8 +60,8 @@ Version rapide ci-dessous. Guide complet, écran par écran, avec les annonces a
 6. Le score est lu « Score : 65 sur 100 », suivi du palier.
 7. Dans une carte : la priorité est lue en toutes lettres ; « Instructions pour WordPress… » s'ouvre avec Entrée.
 8. Zoom navigateur à 200 % puis 400 % : rien n'est coupé, pas de défilement horizontal.
-9. Réglages système « réduire les animations » : la barre et la jauge ne bougent plus.
-10. Bouton « Thème clair » (le site s'ouvre en sombre) : tout reste lisible, le focus reste visible ; le choix est conservé après rechargement.
+9. Réglage système « réduire les animations » : la barre, la jauge et les courbes ne bougent plus ; les tuiles apparaissent sans glisser.
+10. Bouton « Thème sombre » (le site s'ouvre en clair) : tout reste lisible, le focus reste visible ; le choix est conservé après rechargement.
 
 ## API
 

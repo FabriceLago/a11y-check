@@ -11,7 +11,7 @@
   z-index: 10;
   padding: var(--space-2) var(--space-3);
   min-height: var(--target);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   background: var(--c-primary);
   color: var(--c-on-primary);
   font-weight: 700;
@@ -19,30 +19,48 @@
   &:focus { transform: none; }
 }
 
-.entete {
-  border-bottom: 1px solid var(--c-border);
-}
+// ─── En-tête : logo, onglets en pilules, bouton de thème ─────
 .entete__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2) var(--space-4);
-  min-height: 4.5rem;
+  gap: var(--space-3);
+  min-height: 5rem;
+  padding-block: var(--space-3);
 }
-.entete__actions {
+
+.onglets {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-4);
+  gap: var(--space-2);
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: 0 var(--space-4);
+    border: 1px solid color-mix(in srgb, var(--c-surface) 70%, var(--c-border));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--c-surface) 70%, transparent);
+    color: var(--c-text);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 200ms, box-shadow 200ms, transform 200ms var(--ease);
+    &:hover {
+      background: var(--c-surface);
+      transform: translateY(-1px);
+    }
+  }
+  // Current page: the lime pill of the mock-up (also announced by aria-current).
+  a.actif {
+    border-color: var(--c-primary);
+    background: var(--c-primary);
+    color: var(--c-on-primary);
+    box-shadow: 0 6px 20px var(--c-glow);
+  }
 }
-.entete__lien {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--target);
-  font-weight: 700;
-}
-// Round, quiet toggle like the icon buttons of the mock-up; the label stays visible.
+
 .theme {
   display: inline-flex;
   align-items: center;
@@ -51,13 +69,14 @@
   padding: 0 var(--space-3);
   border: 1px solid var(--c-border-strong);
   border-radius: 999px;
-  background: var(--c-surface);
+  background: color-mix(in srgb, var(--c-surface) 70%, transparent);
   color: var(--c-text);
   font: inherit;
   font-size: var(--fs-sm);
   font-weight: 700;
   cursor: pointer;
-  &:hover { background: var(--c-surface-2); }
+  transition: background 200ms;
+  &:hover { background: var(--c-surface); }
 }
 .theme__icone {
   color: var(--c-accent);
@@ -69,15 +88,13 @@
   gap: var(--space-2);
   min-height: var(--target);
   color: var(--c-text);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--fs-sm);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-weight: 700;
+  font-size: var(--fs-1);
+  letter-spacing: -0.01em;
   text-decoration: none;
   &:hover { text-decoration: underline; }
 }
-// Logo: a glowing ring, decorative only.
+// Logo: a green ring, decorative only.
 .marque__logo {
   width: 1.75rem;
   height: 1.75rem;

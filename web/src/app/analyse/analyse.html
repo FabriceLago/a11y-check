@@ -13,7 +13,7 @@
   } @else if (rapport(); as r) {
     <article class="rapport" aria-labelledby="titre-rapport">
       <header class="rapport__entete">
-        <h1 id="titre-rapport" #titre tabindex="-1">Résultat pour {{ site() }}</h1>
+        <h1 id="titre-rapport" #titre tabindex="-1">Résultat pour <span class="vert">{{ site() }}</span></h1>
         <p class="meta">
           Page d'accueil analysée le {{ date() }}&nbsp;:
           <a [href]="r.finalUrl" rel="noopener noreferrer">{{ urlLisible() }}</a>
@@ -26,7 +26,7 @@
       </header>
 
       <div class="bento">
-        <section class="tuile resume" aria-labelledby="titre-resume">
+        <section class="verre apparait resume" aria-labelledby="titre-resume">
           <h2 id="titre-resume" class="visually-hidden">Résumé</h2>
           <app-score-jauge [score]="r.score" [palier]="r.palier" />
           <div class="resume__texte">
@@ -54,7 +54,7 @@
           </div>
         </section>
 
-        <section class="tuile mentions" aria-labelledby="titre-mentions">
+        <section class="verre apparait mentions" aria-labelledby="titre-mentions">
           <h2 id="titre-mentions">À savoir avant de lire ce rapport</h2>
           <ul>
             @for (mention of r.mentions; track mention) {
@@ -71,7 +71,7 @@
           </h2>
           <ol class="cartes">
             @for (p of r.problemes; track p.id) {
-              <li><app-carte-probleme [probleme]="p" /></li>
+              <li class="apparait"><app-carte-probleme [probleme]="p" /></li>
             }
           </ol>
         </section>
@@ -81,7 +81,7 @@
       }
       <div class="bloc-suivant suite">
         <app-offre-pdf [scanId]="id()" />
-        <section class="corriger" aria-labelledby="titre-corriger">
+        <section class="verre corriger" aria-labelledby="titre-corriger">
           <h2 id="titre-corriger">Pas le temps de tout corriger&nbsp;?</h2>
           <p>Nous pouvons nous en charger, ou accompagner votre webdesigner. Réponse sous 2 jours ouvrables, sans engagement.</p>
           <a class="button button--secondary" routerLink="/faire-corriger" [queryParams]="{ scan: id() }">Faire corriger mon site</a>
