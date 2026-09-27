@@ -138,3 +138,5 @@ est bon (arbre de structure, langue, signets, textes alternatifs) mais n'est pas
 Chromium n'accède jamais directement au réseau : chaque requête passe par un relais Node
 qui valide l'URL, suit les redirections lui-même et vérifie l'IP **au moment de la connexion**
 (anti DNS-rebinding). Filet de sécurité : Chromium est lancé avec un proxy inexistant.
+#   a 1 1 y - c h e c k  
+ 
