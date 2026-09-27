@@ -50,6 +50,8 @@ sauvegardes quotidiennes de la base, bac à sable de Chromium actif) : voir **[D
 
 ## Test manuel au lecteur d'écran (NVDA ou VoiceOver, 10 min)
 
+Version rapide ci-dessous. Guide complet, écran par écran, avec les annonces attendues : **[docs/TEST-NVDA.md](docs/TEST-NVDA.md)**.
+
 1. Accueil : Tab → « Aller au contenu » est annoncé et visible ; Entrée amène au contenu.
 2. Envoyer le champ vide : l'erreur est annoncée, le focus reste dans le champ, le champ est dit « non valide ».
 3. Saisir une adresse, Entrée : le titre « Analyse de … en cours » est annoncé.
