@@ -5,13 +5,13 @@ const CLE = 'theme';
 
 function lire(): NomTheme {
   try {
-    return localStorage.getItem(CLE) === 'clair' ? 'clair' : 'sombre';
+    return localStorage.getItem(CLE) === 'sombre' ? 'sombre' : 'clair';
   } catch {
-    return 'sombre'; // storage blocked (private window…): default theme
+    return 'clair'; // storage blocked (private window…): default theme
   }
 }
 
-/** Dark by default; the choice is remembered per browser. Applied synchronously so
+/** Light by default; the choice is remembered per browser. Applied synchronously so
  *  anything that reads computed colours right after a switch sees the new theme. */
 @Injectable({ providedIn: 'root' })
 export class Theme {
@@ -33,7 +33,7 @@ export class Theme {
   }
 
   private appliquer(t: NomTheme) {
-    if (t === 'clair') document.documentElement.dataset['theme'] = 'light';
+    if (t === 'sombre') document.documentElement.dataset['theme'] = 'dark';
     else delete document.documentElement.dataset['theme'];
   }
 }

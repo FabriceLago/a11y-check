@@ -20,12 +20,6 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     :host {
       display: block;
     }
-    .bloc {
-      padding: var(--space-5);
-      border: 1px solid var(--c-border);
-      border-radius: var(--radius);
-      background: var(--c-surface);
-    }
     .intro,
     .petit {
       max-width: var(--measure);

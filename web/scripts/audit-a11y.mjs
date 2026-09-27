@@ -56,12 +56,13 @@ async function auditer(page, ecran, variante) {
   const debordement = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   for (const v of violations) problemes.push(`${ecran} [${variante.nom}] ${v.id} (${v.nodes.length}) : ${v.help}`);
   if (debordement) problemes.push(`${ecran} [${variante.nom}] défilement horizontal`);
-  resultats.push({ ecran, variante: variante.nom, violations: violations.map((v) => ({ id: v.id, impact: v.impact, aide: v.help, elements: v.nodes.map((n) => n.target.join(' ')) })), debordement });
+  resultats.push({ ecran, variante: variante.nom, violations: violations.map((v) => ({ id: v.id, impact: v.impact, aide: v.help, elements: v.nodes.map((n) => n.target.join(' ')), details: v.nodes.map((n) => n.any[0]?.message ?? n.failureSummary) })), debordement });
   console.log(`${violations.length || debordement ? '✗' : '✓'} ${ecran} — ${variante.nom}`);
 }
 
 async function nouveauContexte(browser, variante) {
-  const c = await browser.newContext({ viewport: variante.viewport, colorScheme: variante.colorScheme, locale: 'fr-BE' });
+  // reducedMotion: audit the settled page, not the fade-in (half-transparent text would fail contrast).
+  const c = await browser.newContext({ viewport: variante.viewport, colorScheme: variante.colorScheme, reducedMotion: 'reduce', locale: 'fr-BE' });
   // The app's theme comes from the header toggle (remembered in localStorage), not from the OS.
   const theme = variante.colorScheme === 'light' ? 'clair' : 'sombre';
   await c.addInitScript((t) => localStorage.setItem('theme', t), theme);

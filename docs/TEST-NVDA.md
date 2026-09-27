@@ -66,7 +66,7 @@ Ouvrez la page d'accueil et laissez NVDA lire.
 | 1.3 | `Entrée` sur ce lien | Le focus arrive au début du contenu (la lecture continue par le titre principal), sans recharger la page |
 | 1.4 | `NVDA+F7`, onglet Titres | Niveau 1 « Votre site est-il accessible à tous ? » ; niveau 2 « Comment ça marche ? » avec 3 titres niveau 3 (les étapes) ; niveau 2 « Pourquoi en parler maintenant ? ». Rien d'autre |
 | 1.5 | Écoutez un titre (`H`) | Il est lu normalement, comme une phrase, **pas épelé** lettre par lettre, bien qu'il soit affiché en capitales |
-| 1.6 | `D` plusieurs fois | Au moins 4 régions : bannière (en-tête), navigation « Raccourcis », contenu principal, pied de page |
+| 1.6 | `D` plusieurs fois | Au moins 4 régions : bannière (en-tête), navigation « Menu principal », contenu principal, pied de page. Dans le menu, l'onglet de la page affichée est annoncé comme « page actuelle » (ou « courant ») |
 | 1.7 | `F` jusqu'au champ | « Adresse de votre site », « modifier » (ou « zone de texte »), suivi de « Par exemple : www.monentreprise.be » |
 | 1.8 | Dans le champ vide, `Entrée` | « Indiquez l'adresse de votre site. » est annoncé ; le focus reste dans le champ, signalé « non valide » (ou « invalide ») |
 | 1.9 | Tapez une lettre | Le message d'erreur disparaît ; le champ n'est plus annoncé comme non valide |
@@ -75,15 +75,15 @@ Ouvrez la page d'accueil et laissez NVDA lire.
 
 ### Bouton de thème (en-tête, sur n'importe quelle page)
 
-Le site s'ouvre en thème sombre. Le bouton en haut à droite permet de passer en clair ; le choix est mémorisé
+Le site s'ouvre en thème clair. Le bouton en haut à droite permet de passer en sombre ; le choix est mémorisé
 dans le navigateur.
 
 | # | Faites | Attendu |
 |---|---|---|
-| 1.12 | `B` jusqu'au bouton | « Thème clair, bouton ». Le symbole ☀ n'est **pas** lu |
-| 1.13 | `Espace` | La page passe en clair. Le focus reste sur le bouton, qui s'appelle maintenant « Thème sombre » (si NVDA ne le redit pas tout seul, `NVDA+Tab` relit l'élément actif) |
-| 1.14 | `F5` pour recharger, puis `B` | Le thème clair est conservé ; le bouton dit toujours « Thème sombre » |
-| 1.15 | `Espace` sur le bouton | Retour au thème sombre ; le bouton redevient « Thème clair » |
+| 1.12 | `B` jusqu'au bouton | « Thème sombre, bouton ». Le symbole ☾ n'est **pas** lu |
+| 1.13 | `Espace` | La page passe en sombre. Le focus reste sur le bouton, qui s'appelle maintenant « Thème clair » (si NVDA ne le redit pas tout seul, `NVDA+Tab` relit l'élément actif) |
+| 1.14 | `F5` pour recharger, puis `B` | Le thème sombre est conservé ; le bouton dit toujours « Thème clair » |
+| 1.15 | `Espace` sur le bouton | Retour au thème clair ; le bouton redevient « Thème sombre » |
 
 ## Parcours 2 — Analyse en cours
 
@@ -217,4 +217,4 @@ Copiez ce tableau dans un nouveau fichier (ou un ticket) à chaque session de te
 
 - **VoiceOver** (Mac, iPhone) : les mêmes parcours s'appliquent ; sur iPhone, testez au moins les parcours 1 à 3,
   l'essentiel des PME consultant leur rapport sur téléphone.
-- **Zoom et clavier seul** : voir la checklist du README (zoom 200 % et 400 %, animations réduites, thème clair).
+- **Zoom et clavier seul** : voir la checklist du README (zoom 200 % et 400 %, animations réduites, thème sombre).

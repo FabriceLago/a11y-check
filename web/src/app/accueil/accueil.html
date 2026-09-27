@@ -1,8 +1,9 @@
 <main id="contenu" tabindex="-1">
   <section class="hero">
     <div class="wrap hero__grille">
-      <div class="hero__texte">
-        <h1>Votre site est-il accessible à tous&nbsp;?</h1>
+      <div class="hero__texte apparait">
+        <p class="bonjour">Bonjour&nbsp;!</p>
+        <h1>Votre site est-il <span class="vert">accessible</span> à tous&nbsp;?</h1>
         <p class="chapeau">
           Indiquez l'adresse de votre site. En moins d'une minute, vous recevez un rapport clair,
           en français, avec les priorités et le temps nécessaire pour corriger.
@@ -43,10 +44,17 @@
       </div>
 
       <!-- Illustration: the mock-up is hidden from screen readers, the caption describes it. -->
-      <figure class="apercu">
-        <div class="apercu__feuille" aria-hidden="true">
+      <figure class="apercu apparait">
+        <div class="apercu__feuille verre" aria-hidden="true">
           <p class="apercu__site">Exemple&nbsp;: www.boulangerie-exemple.be</p>
           <app-score-jauge [score]="65" palier="Une base à consolider" />
+          <!-- Teal "pulse" curves of the mock-up, drawn once. -->
+          <svg class="ondes" viewBox="0 0 300 60" preserveAspectRatio="none" focusable="false">
+            @for (a of [26, 18, 10, 4]; track a) {
+              <path [attr.d]="'M0 30 C 50 ' + (30 - a) + ', 100 ' + (30 - a) + ', 150 30 S 250 ' + (30 + a) + ', 300 30'" />
+              <path [attr.d]="'M0 30 C 50 ' + (30 + a) + ', 100 ' + (30 + a) + ', 150 30 S 250 ' + (30 - a) + ', 300 30'" />
+            }
+          </svg>
           <ul class="apercu__points">
             <li data-niveau="critique"><span>Critique</span> Des champs de formulaire sans étiquette</li>
             <li data-niveau="importante"><span>Importante</span> Du texte trop pâle sur fond clair</li>
@@ -62,23 +70,23 @@
   <section class="wrap etapes" aria-labelledby="etapes-titre">
     <h2 id="etapes-titre">Comment ça marche&nbsp;?</h2>
     <ol>
-      <li>
+      <li class="verre apparait">
         <h3>Indiquez l'adresse de votre site</h3>
         <p>Aucune inscription&nbsp;: l'adresse suffit.</p>
       </li>
-      <li>
+      <li class="verre apparait">
         <h3>Nous analysons votre page d'accueil</h3>
         <p>Sur ordinateur et sur téléphone, en moins d'une minute.</p>
       </li>
-      <li>
+      <li class="verre apparait">
         <h3>Vous recevez vos priorités</h3>
         <p>Les points à corriger d'abord, expliqués simplement, avec le temps nécessaire et qui peut s'en charger.</p>
       </li>
     </ol>
   </section>
 
-  <section class="eaa" aria-labelledby="eaa-titre">
-    <div class="wrap eaa__grille">
+  <section class="wrap eaa" aria-labelledby="eaa-titre">
+    <div class="eaa__grille verre">
       <h2 id="eaa-titre">Pourquoi en parler maintenant&nbsp;?</h2>
       <div>
         <p>

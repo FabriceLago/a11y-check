@@ -1,7 +1,6 @@
 // Self-hosted font: no call to Google Fonts (GDPR).
 @use '@fontsource/atkinson-hyperlegible/400.css' as font-400;
 @use '@fontsource/atkinson-hyperlegible/700.css' as font-700;
-@use '@fontsource/unbounded/600.css' as display-600;
 @use 'styles/tokens';
 @use 'styles/composants';
 
@@ -21,7 +20,9 @@ body {
   font-size: var(--fs-0);
   line-height: var(--lh);
   color: var(--c-text);
-  background: var(--c-bg);
+  // Pastel wash behind the glass tiles; fixed so it does not scroll away.
+  background: var(--fond-page), var(--c-bg);
+  background-attachment: fixed;
 }
 
 h1,
@@ -31,13 +32,11 @@ h4 {
   line-height: 1.25;
   margin: 0 0 var(--space-3);
 }
-// h1/h2: wide display capitals (CSS only, the source text keeps its normal case for screen readers).
+// Large, light headings as in the mock-up; h3/h4 stay bold for scanning.
 h1,
 h2 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
   line-height: 1.15;
   overflow-wrap: break-word;
 }
@@ -45,6 +44,11 @@ h1 { font-size: var(--fs-3); }
 h2 { font-size: var(--fs-2); }
 h3 { font-size: var(--fs-1); }
 h4 { font-size: var(--fs-0); }
+
+// Highlighted word in a heading (green in the mock-up).
+.vert {
+  color: var(--c-accent);
+}
 
 p,
 ul,
@@ -90,6 +94,43 @@ a {
   border: 0;
 }
 
+// ─── Verre : every tile of the dashboard ─────────────────────
+.verre {
+  padding: var(--space-5);
+  border: 1px solid color-mix(in srgb, var(--c-surface) 70%, var(--c-border));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--c-surface) 78%, transparent);
+  backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: var(--shadow);
+  transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+}
+// Small title with an icon, like "Business pulse".
+.verre__titre {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+// ─── Animations (one-shot only: nothing loops, WCAG 2.2.2) ───
+// Tiles rise and fade in, one after the other.
+.apparait {
+  animation: apparait 600ms var(--ease) both;
+}
+.apparait:nth-child(2) { animation-delay: 80ms; }
+.apparait:nth-child(3) { animation-delay: 160ms; }
+.apparait:nth-child(4) { animation-delay: 240ms; }
+.apparait:nth-child(5) { animation-delay: 320ms; }
+.apparait:nth-child(n + 6) { animation-delay: 400ms; }
+@keyframes apparait {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -99,29 +140,34 @@ a {
   min-width: var(--target);
   padding: 0.6rem 1.4rem;
   border: 2px solid var(--c-primary);
+  border-radius: 999px;
   background: var(--c-primary);
   color: var(--c-on-primary);
   font: inherit;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  border-radius: 999px;
-  box-shadow: 0 0 24px var(--c-glow);
+  box-shadow: 0 6px 20px var(--c-glow);
+  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease), background 200ms;
   &:hover {
     background: var(--c-primary-hover);
     border-color: var(--c-primary-hover);
     text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px var(--c-glow);
   }
+  &:active { transform: translateY(0); }
   &[aria-disabled='true'] { cursor: progress; }
 }
 .button--secondary {
-  background: transparent;
+  background: color-mix(in srgb, var(--c-surface) 70%, transparent);
   color: var(--c-text);
   border-color: var(--c-border-strong);
   box-shadow: none;
   &:hover {
-    background: var(--c-surface-2);
+    background: var(--c-surface);
     border-color: var(--c-text);
+    box-shadow: none;
   }
 }
 
@@ -130,8 +176,11 @@ a {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    // none, not a tiny duration: a 0.01 ms "transition: all" still leaves colours mid-way
+    // for a frame when the theme switches (seen by axe as light text on a dark tile).
+    transition: none !important;
     scroll-behavior: auto !important;
   }
 }

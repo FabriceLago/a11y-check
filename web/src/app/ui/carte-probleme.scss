@@ -8,12 +8,7 @@
   &[data-niveau='critique'] { --c-niveau: var(--c-critique); --c-niveau-bg: var(--c-critique-bg); }
   &[data-niveau='importante'] { --c-niveau: var(--c-importante); --c-niveau-bg: var(--c-importante-bg); }
 
-  // Calm card: the priority is carried by the badge (a word), not by a loud coloured edge.
-  padding: var(--space-5);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius);
-  background: var(--c-surface);
-  box-shadow: var(--shadow);
+  // Glass tile (.verre, global); the priority is carried by the badge (a word), not by a coloured edge.
 }
 
 .carte__entete {

@@ -1,52 +1,55 @@
-// Design tokens. Dark (anthracite + glowing orange) is the default theme; the header
-// button switches to light (html[data-theme='light']), remembered per browser.
-// Ratios measured against the surface the text sits on (WCAG 2.2: text AAA ≥ 7:1,
+// Design tokens. Light "mint glass" is the default theme; the header button switches to
+// a matching dark theme (html[data-theme='dark']), remembered per browser.
+// Ratios measured against the background the text sits on (WCAG 2.2: text AAA ≥ 7:1,
 // AA ≥ 4.5:1; UI components and focus ≥ 3:1). /design-system recomputes them live.
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  // ─── Couleurs (sombre, par défaut) ────────────────────────
-  --c-bg: #15171b;               // page
-  --c-surface: #1e2127;          // tiles
-  --c-surface-2: #282c33;        // blocks inside a tile
-  --c-border: #30343c;           // decorative separators only
-  --c-border-strong: #8b919c;    // form fields: 5.1:1
-  --c-text: #f3f4f6;             // 16.3:1  AAA
-  --c-text-muted: #b8bdc7;       // 8.6:1   AAA (7.4:1 on surface-2)
-  --c-link: #ffa06b;             // 8.1:1   AAA
-  --c-primary: #ff6b1f;          // button background (dark text: 6.3:1)
-  --c-primary-hover: #ff8547;
-  --c-on-primary: #15171b;
-  --c-accent: #ff7a33;           // text: 6.2:1 AA
-  --c-glow: rgb(255 107 31 / 0.35);
-  --c-focus: #ffd0a8;            // focus ring: 12.7:1
-  --c-focus-halo: #15171b;
+  // ─── Couleurs (clair menthe, par défaut) ──────────────────
+  --c-bg: #e8f4ef;               // page (under a pastel gradient)
+  --c-surface: #ffffff;          // glass tiles (drawn at 78 % opacity)
+  --c-surface-2: #eef6f3;        // blocks inside a tile
+  --c-border: #d3e6de;           // decorative separators only
+  --c-border-strong: #4f685f;    // form fields: 5.4:1
+  --c-text: #10231c;             // 14.6:1  AAA
+  --c-text-muted: #394c45;       // 8.1:1   AAA
+  --c-link: #08552e;             // 7.9:1   AAA
+  --c-primary: #86e27a;          // lime pill (dark text: 10.3:1)
+  --c-primary-hover: #6fd462;
+  --c-on-primary: #10231c;
+  --c-accent: #0a6533;           // green text: 6.4:1 AA
+  --c-trait: #14a38b;            // teal lines of the decorative curves
+  --c-glow: rgb(134 226 122 / 0.55);
+  --c-focus: #1646b8;            // focus ring: 7.2:1 (5.1:1 on the lime pill)
+  --c-focus-halo: #ffffff;
+  --fond-page:
+    radial-gradient(60rem 40rem at 0% 0%, #c9f1e4 0%, transparent 60%),
+    radial-gradient(50rem 36rem at 100% 10%, #e4f0fb 0%, transparent 60%),
+    radial-gradient(50rem 40rem at 60% 100%, #f3eefb 0%, transparent 60%);
 
   // Priorités (texte sur fond teinté, AAA)
-  --c-critique: #ff9b94;   --c-critique-bg: #3b1a1a;   // 7.7:1
-  --c-importante: #ffc978; --c-importante-bg: #3a2a12; // 9.1:1
-  --c-ameliorer: #c9d3e3;  --c-ameliorer-bg: #262b34;  // 9.4:1
+  --c-critique: #8a1616;   --c-critique-bg: #fde8e8;   // 8.1:1
+  --c-importante: #743f00; --c-importante-bg: #fff1dc; // 7.7:1
+  --c-ameliorer: #1d4d6b;  --c-ameliorer-bg: #e3f0f7;  // 7.8:1
 
   // Jauge (graphique, ≥ 3:1)
-  --c-score-bas: #ff7b70;    // 6.4:1
-  --c-score-moyen: #ff8a3d;  // 6.9:1
-  --c-score-haut: #5fdc9a;   // 9.4:1
-  --c-score-piste: #2d3139;
+  --c-score-bas: #c0392b;    // 5.4:1
+  --c-score-moyen: #9a5306;  // 5.8:1
+  --c-score-haut: #0b7a40;   // 5.4:1
+  --c-score-piste: #d7e8e1;
 
   // ─── Typographie ──────────────────────────────────────────
   --font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  // Wide capitals for h1/h2 only: body text stays in the hyperlegible face.
-  --font-display: 'Unbounded', 'Atkinson Hyperlegible', system-ui, sans-serif;
   --fs-0: 1.125rem;  // 18 px: corps de texte
   --fs-sm: 1rem;
   --fs-1: 1.375rem;
-  --fs-2: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem);
-  --fs-3: clamp(1.9rem, 1.4rem + 2.4vw, 3.25rem);
-  --fs-score: 3.25rem;
+  --fs-2: clamp(1.35rem, 1.2rem + 0.6vw, 1.625rem);
+  --fs-3: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  --fs-score: 3rem;
   --lh: 1.6;
 
-  // ─── Espacements, formes ──────────────────────────────────
+  // ─── Espacements, formes, mouvement ───────────────────────
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 1rem;
@@ -54,42 +57,47 @@
   --space-5: 2rem;
   --space-6: 3rem;
   --space-7: 4.5rem;
-  --radius: 1.25rem;
-  --radius-sm: 0.625rem;
+  --radius: 1.5rem;
+  --radius-sm: 0.875rem;
   --target: 2.75rem;   // 44 px: taille de cible tactile minimale
   --focus-width: 3px;
   --measure: 42rem;    // longueur de ligne confortable
-  --wrap: 72rem;
-  --shadow: 0 16px 40px rgb(0 0 0 / 0.35);
+  --wrap: 74rem;
+  --shadow: 0 1px 2px rgb(16 35 28 / 0.04), 0 12px 32px rgb(16 35 28 / 0.07);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-:root[data-theme='light'] {
-  color-scheme: light;
+:root[data-theme='dark'] {
+  color-scheme: dark;
 
-  --c-bg: #eef0f3;
-  --c-surface: #ffffff;
-  --c-surface-2: #f4f6fa;
-  --c-border: #d5dae2;
-  --c-border-strong: #5b6882;    // 5.7:1
-  --c-text: #14213d;             // 16.0:1  AAA
-  --c-text-muted: #3d4a63;       // 8.9:1   AAA
-  --c-link: #1d4fa3;             // 7.8:1   AAA
-  --c-primary: #9a3a06;          // button background (white text: 7.0:1)
-  --c-primary-hover: #7a2e05;
-  --c-on-primary: #ffffff;
-  --c-accent: #9a3a06;           // 7.0:1 AAA
-  --c-glow: rgb(154 58 6 / 0.18);
-  --c-focus: #b54708;            // 5.4:1
-  --c-focus-halo: #ffffff;
+  --c-bg: #0f1a17;
+  --c-surface: #16241f;
+  --c-surface-2: #1d2e28;
+  --c-border: #2a3d36;
+  --c-border-strong: #7f978d;    // 5.1:1
+  --c-text: #eef6f2;             // 16.2:1  AAA
+  --c-text-muted: #b3c4bd;       // 8.8:1   AAA (7.8:1 on surface-2)
+  --c-link: #8fe39a;             // 10.4:1  AAA
+  --c-primary: #86e27a;          // dark text: 11.2:1
+  --c-primary-hover: #9aeb8f;
+  --c-on-primary: #0f1a17;
+  --c-accent: #86e27a;           // 10.1:1
+  --c-trait: #3fd2b5;
+  --c-glow: rgb(134 226 122 / 0.22);
+  --c-focus: #ffd479;            // 12.7:1
+  --c-focus-halo: #0f1a17;
+  --fond-page:
+    radial-gradient(60rem 40rem at 0% 0%, #123a30 0%, transparent 60%),
+    radial-gradient(50rem 36rem at 100% 10%, #14283a 0%, transparent 60%);
 
-  --c-critique: #8f1414;   --c-critique-bg: #fdecec;
-  --c-importante: #7a3e00; --c-importante-bg: #fff1e0;
-  --c-ameliorer: #1d3461;  --c-ameliorer-bg: #e8eef9;
+  --c-critique: #ffa39e;   --c-critique-bg: #3b1c1c;   // 8.0:1
+  --c-importante: #ffd08a; --c-importante-bg: #3a2a12; // 9.6:1
+  --c-ameliorer: #b9d8ea;  --c-ameliorer-bg: #1d2d38;  // 9.5:1
 
-  --c-score-bas: #b42318;
-  --c-score-moyen: #b54708;
-  --c-score-haut: #067647;
-  --c-score-piste: #dde3ec;
+  --c-score-bas: #ff8a80;
+  --c-score-moyen: #ffb454;
+  --c-score-haut: #6ee7a0;
+  --c-score-piste: #2a3d36;
 
-  --shadow: 0 1px 2px rgb(20 33 61 / 0.08), 0 8px 24px rgb(20 33 61 / 0.08);
+  --shadow: 0 16px 40px rgb(0 0 0 / 0.35);
 }
