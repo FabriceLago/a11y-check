@@ -15,8 +15,12 @@ describe('evaluerEaa', () => {
   });
 
   it('never states a legal conclusion', () => {
-    const textes = Object.values(VERDICTS).flatMap((v) => [v.titre, v.texte]).join(' ');
-    expect(textes).not.toMatch(/conforme|certifi|vous devez|obligatoirement|vous êtes (exempté|soumis)/i);
+    const textes = Object.values(VERDICTS)
+      .flatMap((v) => [v.titre, v.texte])
+      .join(' ');
+    expect(textes).not.toMatch(
+      /conforme|certifi|vous devez|obligatoirement|vous êtes (exempté|soumis)/i,
+    );
     expect(AVERTISSEMENT).toContain("n'est pas un avis juridique");
   });
 });
@@ -27,7 +31,9 @@ describe('QuestionnaireEaa', () => {
     await fixture.whenStable();
     const el = fixture.nativeElement as HTMLElement;
     const choisir = async (name: string, value: string) => {
-      const input = el.querySelector<HTMLInputElement>(`input[name="eaa-${name}"][value="${value}"]`)!;
+      const input = el.querySelector<HTMLInputElement>(
+        `input[name="eaa-${name}"][value="${value}"]`,
+      )!;
       input.checked = true;
       input.dispatchEvent(new Event('change'));
       await fixture.whenStable();
@@ -54,7 +60,9 @@ describe('QuestionnaireEaa', () => {
     const fieldsets = el.querySelectorAll('fieldset');
     expect(fieldsets[0].hasAttribute('aria-describedby')).toBe(false);
     expect(fieldsets[1].getAttribute('aria-describedby')).toBe('eaa-erreur-clients');
-    expect(el.querySelector('#eaa-erreur-clients')?.textContent).toContain('Choisissez une réponse');
+    expect(el.querySelector('#eaa-erreur-clients')?.textContent).toContain(
+      'Choisissez une réponse',
+    );
     expect(document.activeElement).toBe(el.querySelector('input[name="eaa-clients"]'));
     expect(el.querySelector('.verdict')).toBeNull();
   });

@@ -21,7 +21,12 @@ describe('OffrePdf', () => {
   beforeEach(() => {
     redirection = vi.fn();
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([]), { provide: REDIRECTION, useValue: redirection }],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+        { provide: REDIRECTION, useValue: redirection },
+      ],
     });
     http = TestBed.inject(HttpTestingController);
   });
@@ -44,7 +49,9 @@ describe('OffrePdf', () => {
     const { el, fixture } = await render();
     el.querySelector('button')!.click();
     await fixture.whenStable();
-    http.expectOne({ method: 'POST', url: '/api/scan/abc/commande' }).flush({ url: 'https://checkout.stripe.test/1' });
+    http
+      .expectOne({ method: 'POST', url: '/api/scan/abc/commande' })
+      .flush({ url: 'https://checkout.stripe.test/1' });
     expect(redirection).toHaveBeenCalledWith('https://checkout.stripe.test/1');
     expect(el.querySelector('button')?.textContent).toContain('Redirection');
   });
@@ -55,7 +62,10 @@ describe('OffrePdf', () => {
     await fixture.whenStable();
     http
       .expectOne('/api/scan/abc/commande')
-      .flush({ message: 'Le service de paiement ne répond pas. Réessayez dans quelques instants.' }, { status: 502, statusText: 'Bad Gateway' });
+      .flush(
+        { message: 'Le service de paiement ne répond pas. Réessayez dans quelques instants.' },
+        { status: 502, statusText: 'Bad Gateway' },
+      );
     await fixture.whenStable();
     expect(el.querySelector('[role="alert"]')?.textContent).toContain('ne répond pas');
     expect(redirection).not.toHaveBeenCalled();

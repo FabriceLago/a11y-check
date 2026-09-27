@@ -4,7 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RapportEmail } from './rapport-email';
 
-const CONSENT = { version: '2026-09-27', texte: "J'accepte de recevoir vos conseils et offres par e-mail." };
+const CONSENT = {
+  version: '2026-09-27',
+  texte: "J'accepte de recevoir vos conseils et offres par e-mail.",
+};
 
 describe('RapportEmail', () => {
   let http: HttpTestingController;
@@ -34,7 +37,9 @@ describe('RapportEmail', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
+    });
     http = TestBed.inject(HttpTestingController);
   });
   afterEach(() => http.verify());
@@ -69,7 +74,11 @@ describe('RapportEmail', () => {
     const { fixture, el, envoyer } = await render();
     await envoyer('marie@exemple.be', true);
     const req = http.expectOne('/api/scan/abc/email');
-    expect(req.request.body).toEqual({ email: 'marie@exemple.be', conseils: true, consentVersion: CONSENT.version });
+    expect(req.request.body).toEqual({
+      email: 'marie@exemple.be',
+      conseils: true,
+      consentVersion: CONSENT.version,
+    });
     req.flush({ message: "C'est envoyé ! Un lien vous permettra de confirmer." });
     await fixture.whenStable();
     const ok = el.querySelector('[role="status"]')!;

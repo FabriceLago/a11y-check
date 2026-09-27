@@ -110,7 +110,9 @@ describe('Analyse', () => {
       '7 autres problèmes et 1 point à vérifier manuellement',
     );
     // The report also offers the EAA questionnaire and the e-mail form (which loads the consent text).
-    expect(el.querySelector('app-questionnaire-eaa h2')?.textContent).toContain("concernée par l'EAA");
+    expect(el.querySelector('app-questionnaire-eaa h2')?.textContent).toContain(
+      "concernée par l'EAA",
+    );
     http.expectOne('/api/consentement').flush({ version: 'v', texte: 'Texte' });
     http.expectOne('/api/offre').flush({ libelle: '39 € TVAC', disponible: true });
     await pause();

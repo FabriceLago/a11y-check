@@ -27,11 +27,31 @@ type Etat = 'confirmation' | 'retard' | 'analyse' | 'pret' | 'echec' | 'erreur';
   imports: [RouterLink],
   templateUrl: './commande.html',
   styles: `
-    .page { padding-top: var(--space-6); }
-    p { max-width: var(--measure); }
-    progress { display: block; width: 100%; max-width: 30rem; height: 1rem; margin: var(--space-2) 0 var(--space-4); accent-color: var(--c-accent); }
-    .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
-    .echec { padding: var(--space-3) var(--space-4); border-left: 4px solid var(--c-critique); background: var(--c-critique-bg); }
+    .page {
+      padding-top: var(--space-6);
+    }
+    p {
+      max-width: var(--measure);
+    }
+    progress {
+      display: block;
+      width: 100%;
+      max-width: 30rem;
+      height: 1rem;
+      margin: var(--space-2) 0 var(--space-4);
+      accent-color: var(--c-accent);
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+    }
+    .echec {
+      padding: var(--space-3) var(--space-4);
+      border-left: 4px solid var(--c-critique);
+      background: var(--c-critique-bg);
+    }
   `,
 })
 export class Commande {
@@ -88,7 +108,8 @@ export class Commande {
     this.requete = this.api.commande(session).subscribe({
       next: (c) => {
         this.commande.set(c);
-        if (c.statut === 'paid' || c.statut === 'processing') this.timer = setTimeout(() => this.interroger(session), this.pollMs);
+        if (c.statut === 'paid' || c.statut === 'processing')
+          this.timer = setTimeout(() => this.interroger(session), this.pollMs);
       },
       error: (e) => {
         // 404 "pending": the Stripe webhook has not arrived yet. Keep waiting, it is not the customer's problem.

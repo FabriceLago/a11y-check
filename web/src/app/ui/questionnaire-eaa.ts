@@ -1,10 +1,19 @@
-import { afterNextRender, Component, ElementRef, inject, Injector, signal, viewChild } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  inject,
+  Injector,
+  signal,
+  viewChild,
+} from '@angular/core';
 
 export type Secteur = 'commerce' | 'finance' | 'transport' | 'ebook' | 'telecom' | 'autre';
 export type Clients = 'particuliers' | 'pros' | 'deux';
 export type Taille = 'micro' | 'plus' | 'inconnu';
 export type Reponses = { secteur?: Secteur; clients?: Clients; taille?: Taille };
-export type Verdict = 'concerne' | 'concerne-sauf-micro' | 'exemption-possible' | 'moins-concerne' | 'indetermine';
+export type Verdict =
+  'concerne' | 'concerne-sauf-micro' | 'exemption-possible' | 'moins-concerne' | 'indetermine';
 
 /** Deliberately simplified reading of the EAA. Never a legal conclusion: see AVERTISSEMENT. */
 export function evaluerEaa({ secteur, clients, taille }: Required<Reponses>): Verdict {
@@ -45,14 +54,21 @@ export const VERDICTS: Record<Verdict, { titre: string; texte: string }> = {
   },
 };
 
-type Question = { id: keyof Reponses; legende: string; options: { valeur: string; libelle: string }[] };
+type Question = {
+  id: keyof Reponses;
+  legende: string;
+  options: { valeur: string; libelle: string }[];
+};
 
 export const QUESTIONS: Question[] = [
   {
     id: 'secteur',
     legende: 'Quelle est votre activité principale en ligne ?',
     options: [
-      { valeur: 'commerce', libelle: 'Commerce en ligne : vente, réservation ou prise de rendez-vous' },
+      {
+        valeur: 'commerce',
+        libelle: 'Commerce en ligne : vente, réservation ou prise de rendez-vous',
+      },
       { valeur: 'finance', libelle: 'Banque, assurance ou services financiers' },
       { valeur: 'transport', libelle: 'Transport de personnes (bus, train, avion, bateau)' },
       { valeur: 'ebook', libelle: 'Livres numériques' },
@@ -71,7 +87,8 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 'taille',
-    legende: "Votre entreprise compte-t-elle moins de 10 personnes, avec un chiffre d'affaires ou un bilan annuel de 2 millions d'euros maximum ?",
+    legende:
+      "Votre entreprise compte-t-elle moins de 10 personnes, avec un chiffre d'affaires ou un bilan annuel de 2 millions d'euros maximum ?",
     options: [
       { valeur: 'micro', libelle: 'Oui, les deux conditions sont remplies' },
       { valeur: 'plus', libelle: 'Non' },
@@ -94,7 +111,7 @@ export class QuestionnaireEaa {
   protected readonly avertissement = AVERTISSEMENT;
   protected readonly reponses = signal<Reponses>({});
   protected readonly manquantes = signal<string[]>([]);
-  protected readonly verdict = signal<(typeof VERDICTS)[Verdict] & { cle: Verdict } | null>(null);
+  protected readonly verdict = signal<((typeof VERDICTS)[Verdict] & { cle: Verdict }) | null>(null);
 
   protected choisir(id: keyof Reponses, valeur: string) {
     this.reponses.update((r) => ({ ...r, [id]: valeur }));
@@ -108,7 +125,9 @@ export class QuestionnaireEaa {
     const manquantes = QUESTIONS.filter((q) => !r[q.id]).map((q) => q.id);
     this.manquantes.set(manquantes);
     if (manquantes.length) {
-      this.hote.nativeElement.querySelector<HTMLInputElement>(`input[name="eaa-${manquantes[0]}"]`)?.focus();
+      this.hote.nativeElement
+        .querySelector<HTMLInputElement>(`input[name="eaa-${manquantes[0]}"]`)
+        ?.focus();
       return;
     }
     const cle = evaluerEaa(r as Required<Reponses>);

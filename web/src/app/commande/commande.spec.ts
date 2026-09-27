@@ -23,13 +23,20 @@ describe('Commande', () => {
 
   async function repondre(body: object, status = 200) {
     await pause();
-    http.expectOne(URL_API).flush(body, status === 200 ? undefined : { status, statusText: 'Erreur' });
+    http
+      .expectOne(URL_API)
+      .flush(body, status === 200 ? undefined : { status, statusText: 'Erreur' });
     await fixture.whenStable();
   }
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([]), { provide: POLL_MS, useValue: 1 }],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
+        { provide: POLL_MS, useValue: 1 },
+      ],
     });
     http = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(Commande);
@@ -58,11 +65,15 @@ describe('Commande', () => {
     expect(progress.max).toBe(10);
     expect(el.querySelector('[role="status"]')?.textContent).toContain('4 pages analysées sur 10');
     await pause();
-    http.expectOne(URL_API).flush(commande({ statut: 'ready', telechargement: '/api/commandes/telechargement/jeton' }));
+    http
+      .expectOne(URL_API)
+      .flush(commande({ statut: 'ready', telechargement: '/api/commandes/telechargement/jeton' }));
   });
 
   it('offers the download, focuses the heading and stops polling', async () => {
-    await repondre(commande({ statut: 'ready', telechargement: '/api/commandes/telechargement/jeton' }));
+    await repondre(
+      commande({ statut: 'ready', telechargement: '/api/commandes/telechargement/jeton' }),
+    );
     const h1 = el.querySelector('h1')!;
     expect(h1.textContent).toContain('Votre rapport est prêt');
     expect(document.activeElement).toBe(h1);
@@ -75,7 +86,9 @@ describe('Commande', () => {
 
   it('is honest about a failed order and the refund', async () => {
     await repondre(commande({ statut: 'refunded' }));
-    expect(el.querySelector('h1')?.textContent).toContain("Nous n'avons pas pu réaliser votre rapport");
+    expect(el.querySelector('h1')?.textContent).toContain(
+      "Nous n'avons pas pu réaliser votre rapport",
+    );
     expect(el.textContent).toContain('intégralement remboursé');
   });
 });

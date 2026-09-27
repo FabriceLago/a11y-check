@@ -1,4 +1,12 @@
-import { afterRenderEffect, Component, ElementRef, inject, input, signal, viewChild } from '@angular/core';
+import {
+  afterRenderEffect,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Consentement, messageErreur, ScanApi } from '../api';
 
@@ -9,10 +17,21 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   imports: [RouterLink],
   templateUrl: './rapport-email.html',
   styles: `
-    :host { display: block; }
-    .bloc { padding: var(--space-5); border: 2px solid var(--c-border); border-radius: var(--radius); }
-    .intro, .petit { max-width: var(--measure); }
-    .choix { margin: var(--space-3) 0; }
+    :host {
+      display: block;
+    }
+    .bloc {
+      padding: var(--space-5);
+      border: 2px solid var(--c-border);
+      border-radius: var(--radius);
+    }
+    .intro,
+    .petit {
+      max-width: var(--measure);
+    }
+    .choix {
+      margin: var(--space-3) 0;
+    }
   `,
 })
 export class RapportEmail {
@@ -46,19 +65,28 @@ export class RapportEmail {
     const email = this.email().trim();
     if (!email) return this.echec('Indiquez votre adresse e-mail.');
     if (email.length > 254 || !EMAIL_RE.test(email)) {
-      return this.echec('Cette adresse e-mail ne semble pas valide. Exemple : prenom@entreprise.be');
+      return this.echec(
+        'Cette adresse e-mail ne semble pas valide. Exemple : prenom@entreprise.be',
+      );
     }
     this.envoi.set(true);
-    this.api.envoyerRapport(this.scanId(), email, this.conseils() ? this.consentement() : null).subscribe({
-      next: ({ message }) => {
-        this.envoi.set(false);
-        this.confirmation.set(message);
-      },
-      error: (e) => {
-        this.envoi.set(false);
-        this.echec(messageErreur(e, 'Cette adresse e-mail ne semble pas valide. Exemple : prenom@entreprise.be'));
-      },
-    });
+    this.api
+      .envoyerRapport(this.scanId(), email, this.conseils() ? this.consentement() : null)
+      .subscribe({
+        next: ({ message }) => {
+          this.envoi.set(false);
+          this.confirmation.set(message);
+        },
+        error: (e) => {
+          this.envoi.set(false);
+          this.echec(
+            messageErreur(
+              e,
+              'Cette adresse e-mail ne semble pas valide. Exemple : prenom@entreprise.be',
+            ),
+          );
+        },
+      });
   }
 
   private echec(message: string) {

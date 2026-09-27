@@ -13,16 +13,26 @@ import { messageErreur, Offre, REDIRECTION, ScanApi } from '../api';
           <h2 id="titre-offre">Recevoir le rapport complet</h2>
           <ul>
             <li>Jusqu'à 10 pages de votre site analysées</li>
-            <li>Un plan d'action trié par priorité, avec le temps nécessaire et qui peut corriger</li>
+            <li>
+              Un plan d'action trié par priorité, avec le temps nécessaire et qui peut corriger
+            </li>
             <li>Des captures d'écran des éléments à corriger</li>
             <li>Une annexe technique pour votre webdesigner ou votre développeur</li>
             <li>La liste des vérifications à faire vous-même</li>
           </ul>
-          <p class="prix"><strong>{{ o.libelle }}</strong>, rapport PDF envoyé par e-mail en quelques minutes.</p>
+          <p class="prix">
+            <strong>{{ o.libelle }}</strong
+            >, rapport PDF envoyé par e-mail en quelques minutes.
+          </p>
           @if (erreur(); as message) {
             <p class="message-erreur" role="alert">{{ message }}</p>
           }
-          <button type="button" class="button" (click)="commander()" [attr.aria-disabled]="envoi() ? 'true' : null">
+          <button
+            type="button"
+            class="button"
+            (click)="commander()"
+            [attr.aria-disabled]="envoi() ? 'true' : null"
+          >
             {{ envoi() ? 'Redirection vers le paiement…' : 'Recevoir le rapport complet (PDF)' }}
           </button>
           <p class="petit">
@@ -34,14 +44,29 @@ import { messageErreur, Offre, REDIRECTION, ScanApi } from '../api';
     }
   `,
   styles: `
-    :host { display: block; }
-    .offre {
-      padding: var(--space-5); border: 2px solid var(--c-accent); border-radius: var(--radius); background: var(--c-bg);
+    :host {
+      display: block;
     }
-    ul { padding-left: 1.2em; max-width: var(--measure); }
-    li + li { margin-top: var(--space-1); }
-    .prix { font-size: var(--fs-1); }
-    .petit { margin: var(--space-3) 0 0; max-width: var(--measure); }
+    .offre {
+      padding: var(--space-5);
+      border: 2px solid var(--c-accent);
+      border-radius: var(--radius);
+      background: var(--c-bg);
+    }
+    ul {
+      padding-left: 1.2em;
+      max-width: var(--measure);
+    }
+    li + li {
+      margin-top: var(--space-1);
+    }
+    .prix {
+      font-size: var(--fs-1);
+    }
+    .petit {
+      margin: var(--space-3) 0 0;
+      max-width: var(--measure);
+    }
   `,
 })
 export class OffrePdf {
