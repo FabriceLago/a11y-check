@@ -1,7 +1,8 @@
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import type { Probleme } from '../api';
+import { Theme } from '../theme';
 import { CarteProbleme } from '../ui/carte-probleme';
 import { ScoreJauge } from '../ui/score-jauge';
 import { niveau, ratio } from './contraste';
@@ -14,7 +15,9 @@ const PAIRES: Paire[] = [
   { usage: 'Texte secondaire sur fond de carte', texte: '--c-text-muted', fond: '--c-surface' },
   { usage: 'Liens', texte: '--c-link', fond: '--c-bg' },
   { usage: 'Texte de bouton principal', texte: '--c-on-primary', fond: '--c-primary' },
-  { usage: 'Texte d’accent', texte: '--c-accent', fond: '--c-bg' },
+  { usage: 'Texte secondaire dans un bloc de carte', texte: '--c-text-muted', fond: '--c-surface-2' },
+  { usage: 'Liens sur fond de carte', texte: '--c-link', fond: '--c-surface' },
+  { usage: 'Texte d’accent', texte: '--c-accent', fond: '--c-surface' },
   { usage: 'Priorité « Critique » et erreurs', texte: '--c-critique', fond: '--c-critique-bg' },
   { usage: 'Priorité « Importante »', texte: '--c-importante', fond: '--c-importante-bg' },
   { usage: 'Priorité « À améliorer »', texte: '--c-ameliorer', fond: '--c-ameliorer-bg' },
@@ -86,11 +89,10 @@ export class DesignSystem {
   protected readonly code = CODE;
   protected readonly exemple = EXEMPLE_PROBLEME;
 
-  /** Re-measure when the OS theme changes: the table always shows the theme on screen. */
-  private readonly sombre = signal(matchMedia('(prefers-color-scheme: dark)').matches);
-  protected readonly theme = computed(() => (this.sombre() ? 'sombre' : 'clair'));
+  /** Re-measure when the theme changes: the table always shows the theme on screen. */
+  protected readonly theme = inject(Theme).actuel;
   protected readonly contrastes = computed(() => {
-    this.sombre();
+    this.theme();
     const styles = getComputedStyle(document.documentElement);
     const valeur = (token: string) => styles.getPropertyValue(token).trim();
     return PAIRES.map((p) => {
@@ -106,17 +108,10 @@ export class DesignSystem {
   });
 
   constructor() {
-    const mq = matchMedia('(prefers-color-scheme: dark)');
-    const suivre = (e: MediaQueryListEvent) => this.sombre.set(e.matches);
-    mq.addEventListener('change', suivre);
-
     // Public but kept out of search results (portfolio page, not the commercial offer).
     const meta = inject(Meta);
     meta.updateTag({ name: 'robots', content: 'noindex' });
-    inject(DestroyRef).onDestroy(() => {
-      mq.removeEventListener('change', suivre);
-      meta.removeTag('name="robots"');
-    });
+    inject(DestroyRef).onDestroy(() => meta.removeTag('name="robots"'));
   }
 
   protected formatRatio(r: number | null) {

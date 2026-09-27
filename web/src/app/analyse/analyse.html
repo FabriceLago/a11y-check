@@ -25,25 +25,44 @@
         }
       </header>
 
-      <section class="resume" aria-labelledby="titre-resume">
-        <h2 id="titre-resume" class="visually-hidden">Résumé</h2>
-        <app-score-jauge [score]="r.score" [palier]="r.palier" />
-        <div class="resume__texte">
-          <p class="synthese">{{ r.synthese }}</p>
-          @if (r.effortTotal; as effort) {
-            <p class="effort"><strong>Temps de correction estimé&nbsp;:</strong> {{ effort.texte }}.</p>
-          }
-        </div>
-      </section>
+      <div class="bento">
+        <section class="tuile resume" aria-labelledby="titre-resume">
+          <h2 id="titre-resume" class="visually-hidden">Résumé</h2>
+          <app-score-jauge [score]="r.score" [palier]="r.palier" />
+          <div class="resume__texte">
+            <p class="synthese">{{ r.synthese }}</p>
+            <dl class="chiffres">
+              @if (r.effortTotal; as effort) {
+                <div class="chiffres__large">
+                  <dt>Temps de correction estimé</dt>
+                  <dd>{{ effort.texte }}</dd>
+                </div>
+              }
+              <div>
+                <dt>Points prioritaires</dt>
+                <dd>{{ r.problemes.length }}</dd>
+              </div>
+              <div>
+                <dt>Problèmes relevés</dt>
+                <dd>{{ r.totalProblemes }}</dd>
+              </div>
+              <div>
+                <dt>Points à vérifier vous-même</dt>
+                <dd>{{ r.pointsAVerifier }}</dd>
+              </div>
+            </dl>
+          </div>
+        </section>
 
-      <section class="mentions" aria-labelledby="titre-mentions">
-        <h2 id="titre-mentions">À savoir avant de lire ce rapport</h2>
-        <ul>
-          @for (mention of r.mentions; track mention) {
-            <li>{{ mention }}</li>
-          }
-        </ul>
-      </section>
+        <section class="tuile mentions" aria-labelledby="titre-mentions">
+          <h2 id="titre-mentions">À savoir avant de lire ce rapport</h2>
+          <ul>
+            @for (mention of r.mentions; track mention) {
+              <li>{{ mention }}</li>
+            }
+          </ul>
+        </section>
+      </div>
 
       @if (r.problemes.length) {
         <section class="priorites" aria-labelledby="titre-priorites">

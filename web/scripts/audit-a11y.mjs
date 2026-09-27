@@ -62,6 +62,9 @@ async function auditer(page, ecran, variante) {
 
 async function nouveauContexte(browser, variante) {
   const c = await browser.newContext({ viewport: variante.viewport, colorScheme: variante.colorScheme, locale: 'fr-BE' });
+  // The app's theme comes from the header toggle (remembered in localStorage), not from the OS.
+  const theme = variante.colorScheme === 'light' ? 'clair' : 'sombre';
+  await c.addInitScript((t) => localStorage.setItem('theme', t), theme);
   if (!LIVE) await c.route('**/api/**', simulateurApi());
   return c;
 }

@@ -17,14 +17,11 @@ describe('ScoreJauge', () => {
     expect(el.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('fills the ring proportionally (65 % of the circumference)', async () => {
+  it('fills the dial proportionally (65 % of the track)', async () => {
     const el = await render(65, 'x');
-    const [plein, total] = el
-      .querySelector('.arc')!
-      .getAttribute('stroke-dasharray')!
-      .split(' ')
-      .map(Number);
-    expect(plein / total).toBeCloseTo(0.65);
+    const longueur = (sel: string) =>
+      Number(el.querySelector(sel)!.getAttribute('stroke-dasharray')!.split(' ')[0]);
+    expect(longueur('.arc') / longueur('.piste')).toBeCloseTo(0.65);
   });
 
   it.each([
