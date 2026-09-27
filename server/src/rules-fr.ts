@@ -75,7 +75,7 @@ const VIDEO_CAPTIONS: Omit<RuleFr, 'wcag'> = {
   ],
   cms: {
     wordpress: 'Bloc Vidéo → « Pistes de texte » → ajoutez votre fichier .vtt.',
-    wix: 'Paramètres du lecteur vidéo → Sous-titres → Ajouter.',
+    wix: 'Wix Vidéo ne permet pas d\'ajouter des sous-titres : publiez la vidéo sur YouTube ou Vimeo avec ses sous-titres, puis intégrez-la avec l\'élément Vidéo.',
     shopify: 'Hébergez la vidéo sur YouTube ou Vimeo avec les sous-titres activés, puis intégrez-la.',
   },
 };
@@ -95,8 +95,8 @@ export const RULES: Record<string, RuleFr> = typographier({
     ],
     cms: {
       wordpress: "Médias → cliquez sur l'image → champ « Texte alternatif ».",
-      wix: "Cliquez sur l'image → Paramètres → champ « Texte alternatif ».",
-      shopify: "Contenu → Fichiers (ou la fiche produit) → cliquez sur l'image → « Ajouter un texte alternatif ».",
+      wix: "Cliquez sur l'image → icône Paramètres → champ « Que contient l'image ? ».",
+      shopify: "Produits → le produit → cliquez sur l'image → « Ajouter un texte alternatif ». Pour les autres images : Contenu → Fichiers.",
     },
   },
   'input-image-alt': {
@@ -164,7 +164,7 @@ export const RULES: Record<string, RuleFr> = typographier({
     ],
     cms: {
       wordpress: 'Apparence → Personnaliser (ou Éditeur de site → Styles) → Couleurs.',
-      wix: 'Paramètres du site → Thème du site → Couleurs.',
+      wix: "Design du site (menu de gauche de l'Éditeur) → Thème de couleurs.",
       shopify: 'Boutique en ligne → Thèmes → Personnaliser → Paramètres du thème → Couleurs.',
     },
   },
@@ -212,7 +212,7 @@ export const RULES: Record<string, RuleFr> = typographier({
     etapes: ['Ajoutez lang="fr" (ou fr-BE) sur la balise <html> du modèle de page.', 'Pour un site multilingue, chaque version doit indiquer sa propre langue (nl, en…).'],
     cms: {
       wordpress: 'Réglages → Général → Langue du site : choisissez « Français ». Si le problème persiste, votre thème est en cause : demandez à votre webdesigner.',
-      wix: 'Paramètres → Langue et région → vérifiez la langue du site.',
+      wix: 'Tableau de bord → Paramètres → Langue et région → vérifiez la « Langue du site ».',
       shopify: 'Paramètres → Langues : vérifiez la langue par défaut de la boutique.',
     },
   },
@@ -249,8 +249,8 @@ export const RULES: Record<string, RuleFr> = typographier({
     etapes: ['Donnez à chaque page un titre court et unique, par exemple « Contact – Boulangerie Dupont ».', 'Placez d\'abord ce qui est propre à la page, puis le nom de votre entreprise.'],
     cms: {
       wordpress: 'Avec Yoast SEO ou Rank Math : champ « Titre SEO » en bas de chaque page.',
-      wix: 'Menu Pages → ⋯ → Référencement (SEO) → Titre de la page.',
-      shopify: 'En bas de chaque page ou produit : « Référencement » → Modifier → Titre de la page.',
+      wix: 'Pages et menu → ⋯ (Plus d\'actions) à côté de la page → Bases de référencement → « Balise Title ».',
+      shopify: 'En bas de la page ou de la fiche produit, section d\'aperçu dans les moteurs de recherche → icône crayon → « Titre de la page ».',
     },
   },
   'p-as-heading': {
@@ -262,8 +262,8 @@ export const RULES: Record<string, RuleFr> = typographier({
     etapes: ['Repérez les paragraphes en gras qui jouent le rôle de titre.', 'Transformez-les en vrais titres (Titre 2, Titre 3…) avec le sélecteur de style de votre éditeur.'],
     cms: {
       wordpress: 'Transformez le bloc Paragraphe en bloc « Titre » et choisissez H2 ou H3.',
-      wix: 'Sélectionnez le texte → Thèmes de texte → « Titre 2 » ou « Titre 3 ».',
-      shopify: 'Dans l\'éditeur de texte, menu « Paragraphe » → « Titre 2 ».',
+      wix: 'Sélectionnez le texte → Modifier le texte → Référencement et accessibilité → « Choisir une balise HTML » : H2 ou H3.',
+      shopify: 'Dans l\'éditeur de texte, bouton de mise en forme (au début de la barre d\'outils) → « Titre 2 ».',
     },
   },
   bypass: {
@@ -366,7 +366,6 @@ export const RULES: Record<string, RuleFr> = typographier({
     ],
     cms: {
       wordpress: 'Pour une image-lien : remplissez son texte alternatif. Bloc « Icônes de réseaux sociaux » : renseignez le libellé de chaque icône.',
-      wix: 'Barre de réseaux sociaux → Paramètres → texte alternatif de chaque icône.',
     },
   },
   'button-name': {
@@ -426,7 +425,7 @@ export const RULES: Record<string, RuleFr> = typographier({
     ],
     cms: {
       wordpress: 'Contact Form 7, WPForms, Gravity Forms : affichez les libellés des champs au lieu des textes d\'exemple (placeholders).',
-      wix: 'Paramètres du formulaire → affichez le titre de chaque champ.',
+      wix: 'Modifier le formulaire → sélectionnez un champ → Paramètres → ⋯ à côté du titre du champ → affichez le titre du champ.',
       shopify: 'Formulaire de contact : si les libellés sont masqués par le thème, demandez à votre webdesigner de les afficher.',
     },
   },
