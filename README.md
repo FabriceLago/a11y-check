@@ -61,7 +61,7 @@ Version rapide ci-dessous. Guide complet, écran par écran, avec les annonces a
 7. Dans une carte : la priorité est lue en toutes lettres ; « Instructions pour WordPress… » s'ouvre avec Entrée.
 8. Zoom navigateur à 200 % puis 400 % : rien n'est coupé, pas de défilement horizontal.
 9. Réglages système « réduire les animations » : la barre et la jauge ne bougent plus.
-10. Mode sombre du système : tout reste lisible, le focus reste visible.
+10. Bouton « Thème clair » (le site s'ouvre en sombre) : tout reste lisible, le focus reste visible ; le choix est conservé après rechargement.
 
 ## API
 
