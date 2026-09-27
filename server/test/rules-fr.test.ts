@@ -52,4 +52,22 @@ describe('language guards', () => {
     expect(everything.filter((t) => english.test(t))).toEqual([]);
     expect(english.test('Ensure images have alt text')).toBe(true);
   });
+
+  it('keeps technical jargon out of what the owner reads (titles and « pourquoi »)', () => {
+    const lus = Object.values(all).flatMap((r) => [r.titre, r.pourquoi]);
+    expect(lus.filter((t) => /ARIA|SVG|<\w+|attribut/i.test(t))).toEqual([]);
+  });
+
+  it('uses French typography: no line can start with « : » or an orphan quote mark', () => {
+    const regle = Object.values(all).flatMap(texts);
+    expect(regle.filter((t) => / [:;!?»]|« /.test(t))).toEqual([]);
+  });
+});
+
+describe('priorities', () => {
+  it('treats keyboard dead ends as blocking', () => {
+    for (const id of ['scrollable-region-focusable', 'frame-focusable-content', 'server-side-image-map']) {
+      expect(RULES[id].bloquant, id).toBe(true);
+    }
+  });
 });

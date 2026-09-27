@@ -72,7 +72,7 @@ describe('effort', () => {
   it('goes up one level above 20 elements', () => {
     expect(bumpEffort('15 min', 20)).toBe('15 min');
     expect(bumpEffort('15 min', 21)).toBe('1–2 h');
-    expect(bumpEffort('nécessite un développeur', 500)).toBe('nécessite un développeur');
+    expect(bumpEffort('une journée ou plus', 500)).toBe('une journée ou plus');
   });
 });
 

@@ -10,8 +10,8 @@ const MAX_OCCURRENCE_FACTOR = 2;
 const EFFORT_BUMP_THRESHOLD = 20; // above this many elements, effort goes up one level
 const FREE_TOP = 5;
 
-const EFFORTS: Effort[] = ['15 min', '1–2 h', 'une demi-journée', 'nécessite un développeur'];
-export const EFFORT_MINUTES: Record<Effort, number> = { '15 min': 15, '1–2 h': 90, 'une demi-journée': 240, 'nécessite un développeur': 480 };
+const EFFORTS: Effort[] = ['15 min', '1–2 h', 'une demi-journée', 'une journée ou plus'];
+export const EFFORT_MINUTES: Record<Effort, number> = { '15 min': 15, '1–2 h': 90, 'une demi-journée': 240, 'une journée ou plus': 480 };
 
 export type Priorite = 'Critique' | 'Importante' | 'À améliorer';
 const PRIORITES: Priorite[] = ['Critique', 'Importante', 'À améliorer'];

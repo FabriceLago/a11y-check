@@ -57,7 +57,7 @@ const RAPPORT = {
       id: 'target-size',
       titre: 'Certains boutons ou liens sont trop petits pour le doigt',
       pourquoi: 'Des cibles minuscules provoquent des erreurs pour les personnes qui ont des difficultés motrices.',
-      touche: [{ id: 'moteur', label: 'Personnes à mobilité réduite' }],
+      touche: [{ id: 'moteur', label: 'Personnes avec des difficultés motrices' }],
       priorite: 'Importante',
       effort: '1–2 h',
       quiCorrige: 'Votre webdesigner',
