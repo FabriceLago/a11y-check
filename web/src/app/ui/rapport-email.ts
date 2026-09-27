@@ -22,8 +22,9 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     }
     .bloc {
       padding: var(--space-5);
-      border: 2px solid var(--c-border);
+      border: 1px solid var(--c-border);
       border-radius: var(--radius);
+      background: var(--c-surface);
     }
     .intro,
     .petit {

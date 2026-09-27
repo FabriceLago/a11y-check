@@ -6,6 +6,13 @@
       <span class="marque__logo" aria-hidden="true"></span>
       {{ appName }}
     </a>
+    <nav class="entete__actions" aria-label="Raccourcis">
+      <a routerLink="/faire-corriger" class="entete__lien">Faire corriger mon site</a>
+      <button type="button" class="theme" (click)="theme.basculer()">
+        <span class="theme__icone" aria-hidden="true">{{ theme.actuel() === 'sombre' ? '☀' : '☾' }}</span>
+        {{ theme.actuel() === 'sombre' ? 'Thème clair' : 'Thème sombre' }}
+      </button>
+    </nav>
   </div>
 </header>
 

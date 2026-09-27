@@ -1,7 +1,8 @@
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import type { Probleme } from '../api';
+import { Theme } from '../theme';
 import { CarteProbleme } from '../ui/carte-probleme';
 import { ScoreJauge } from '../ui/score-jauge';
 import { niveau, ratio } from './contraste';
@@ -14,7 +15,9 @@ const PAIRES: Paire[] = [
   { usage: 'Texte secondaire sur fond de carte', texte: '--c-text-muted', fond: '--c-surface' },
   { usage: 'Liens', texte: '--c-link', fond: '--c-bg' },
   { usage: 'Texte de bouton principal', texte: '--c-on-primary', fond: '--c-primary' },
-  { usage: 'Texte d’accent', texte: '--c-accent', fond: '--c-bg' },
+  { usage: 'Texte secondaire dans un bloc de carte', texte: '--c-text-muted', fond: '--c-surface-2' },
+  { usage: 'Liens sur fond de carte', texte: '--c-link', fond: '--c-surface' },
+  { usage: 'Texte d’accent', texte: '--c-accent', fond: '--c-surface' },
   { usage: 'Priorité « Critique » et erreurs', texte: '--c-critique', fond: '--c-critique-bg' },
   { usage: 'Priorité « Importante »', texte: '--c-importante', fond: '--c-importante-bg' },
   { usage: 'Priorité « À améliorer »', texte: '--c-ameliorer', fond: '--c-ameliorer-bg' },
@@ -28,12 +31,16 @@ const PAIRES: Paire[] = [
 export const EXEMPLE_PROBLEME: Probleme = {
   id: 'image-alt',
   titre: "Certaines images n'ont pas de description",
-  pourquoi: "Une personne aveugle qui utilise un lecteur d'écran ne saura pas ce que montre l'image.",
+  pourquoi:
+    "Une personne aveugle qui utilise un lecteur d'écran ne saura pas ce que montre l'image.",
   touche: [{ id: 'aveugles', label: 'Personnes aveugles' }],
   priorite: 'Critique',
   effort: '15 min',
   quiCorrige: 'Vous-même, dans votre outil de gestion du site',
-  etapes: ['Repérez les images listées dans le rapport.', 'Décrivez en une phrase ce qu’elles montrent.'],
+  etapes: [
+    'Repérez les images listées dans le rapport.',
+    'Décrivez en une phrase ce qu’elles montrent.',
+  ],
   cms: { wordpress: 'Médias → cliquez sur l’image → champ « Texte alternatif ».' },
   wcag: ['1.1.1'],
   occurrences: 4,
@@ -82,31 +89,29 @@ export class DesignSystem {
   protected readonly code = CODE;
   protected readonly exemple = EXEMPLE_PROBLEME;
 
-  /** Re-measure when the OS theme changes: the table always shows the theme on screen. */
-  private readonly sombre = signal(matchMedia('(prefers-color-scheme: dark)').matches);
-  protected readonly theme = computed(() => (this.sombre() ? 'sombre' : 'clair'));
+  /** Re-measure when the theme changes: the table always shows the theme on screen. */
+  protected readonly theme = inject(Theme).actuel;
   protected readonly contrastes = computed(() => {
-    this.sombre();
+    this.theme();
     const styles = getComputedStyle(document.documentElement);
     const valeur = (token: string) => styles.getPropertyValue(token).trim();
     return PAIRES.map((p) => {
       const r = ratio(valeur(p.texte), valeur(p.fond));
-      return { ...p, valeurTexte: valeur(p.texte), valeurFond: valeur(p.fond), ratio: r, niveau: r === null ? '—' : niveau(r, p.nonTexte) };
+      return {
+        ...p,
+        valeurTexte: valeur(p.texte),
+        valeurFond: valeur(p.fond),
+        ratio: r,
+        niveau: r === null ? '—' : niveau(r, p.nonTexte),
+      };
     });
   });
 
   constructor() {
-    const mq = matchMedia('(prefers-color-scheme: dark)');
-    const suivre = (e: MediaQueryListEvent) => this.sombre.set(e.matches);
-    mq.addEventListener('change', suivre);
-
     // Public but kept out of search results (portfolio page, not the commercial offer).
     const meta = inject(Meta);
     meta.updateTag({ name: 'robots', content: 'noindex' });
-    inject(DestroyRef).onDestroy(() => {
-      mq.removeEventListener('change', suivre);
-      meta.removeTag('name="robots"');
-    });
+    inject(DestroyRef).onDestroy(() => meta.removeTag('name="robots"'));
   }
 
   protected formatRatio(r: number | null) {

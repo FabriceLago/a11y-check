@@ -3,6 +3,7 @@ import { Component, computed, input } from '@angular/core';
 type Niveau = 'bas' | 'moyen' | 'haut';
 const ICONES: Record<Niveau, string> = { bas: '!', moyen: '◐', haut: '✓' };
 const CIRCONFERENCE = 2 * Math.PI * 52; // r = 52 → ≈ 327
+const ARC = CIRCONFERENCE * 0.75; // 270° dial, open at the bottom
 
 /** The ring is decorative; the score and its label are plain text (never colour alone). */
 @Component({
@@ -10,14 +11,21 @@ const CIRCONFERENCE = 2 * Math.PI * 52; // r = 52 → ≈ 327
   template: `
     <div class="jauge" [attr.data-niveau]="niveau()">
       <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
-        <circle class="piste" cx="60" cy="60" r="52" />
+        <circle
+          class="piste"
+          cx="60"
+          cy="60"
+          r="52"
+          [attr.stroke-dasharray]="piste"
+          transform="rotate(135 60 60)"
+        />
         <circle
           class="arc"
           cx="60"
           cy="60"
           r="52"
           [attr.stroke-dasharray]="dash()"
-          transform="rotate(-90 60 60)"
+          transform="rotate(135 60 60)"
         />
       </svg>
       <p class="valeur">
@@ -55,9 +63,12 @@ const CIRCONFERENCE = 2 * Math.PI * 52; // r = 52 → ≈ 327
     .piste {
       stroke: var(--c-score-piste);
     }
-    .arc {
+    circle {
       stroke-linecap: round;
+    }
+    .arc {
       animation: remplir 900ms ease-out;
+      filter: drop-shadow(0 0 5px var(--c-niveau));
     }
     @keyframes remplir {
       from {
@@ -128,7 +139,6 @@ export class ScoreJauge {
   );
   protected readonly icone = computed(() => ICONES[this.niveau()]);
   // Real user units, not pathLength: Chromium ignores pathLength while a CSS animation drives the dasharray.
-  protected readonly dash = computed(
-    () => `${(this.score() / 100) * CIRCONFERENCE} ${CIRCONFERENCE}`,
-  );
+  protected readonly piste = `${ARC} ${CIRCONFERENCE}`;
+  protected readonly dash = computed(() => `${(this.score() / 100) * ARC} ${CIRCONFERENCE}`);
 }

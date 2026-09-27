@@ -1,42 +1,48 @@
-// Design tokens. Contrast ratios are measured against --c-bg of the same theme
-// (WCAG 2.2: text AAA ≥ 7:1, AA ≥ 4.5:1; UI components and focus ≥ 3:1).
+// Design tokens. Dark (anthracite + glowing orange) is the default theme; the header
+// button switches to light (html[data-theme='light']), remembered per browser.
+// Ratios measured against the surface the text sits on (WCAG 2.2: text AAA ≥ 7:1,
+// AA ≥ 4.5:1; UI components and focus ≥ 3:1). /design-system recomputes them live.
 
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
 
-  // ─── Couleurs (clair) ────────────────────────────────────
-  --c-bg: #ffffff;
-  --c-surface: #f4f6fa;          // cards, text on it stays AAA
-  --c-border: #c9d1de;           // decorative separators only
-  --c-border-strong: #5b6882;    // form fields: 5.7:1
-  --c-text: #14213d;             // 16.0:1  AAA
-  --c-text-muted: #3d4a63;       // 8.9:1   AAA
-  --c-link: #1d4fa3;             // 7.8:1   AAA
-  --c-primary: #1d3461;          // button background (white text: 12.3:1)
-  --c-primary-hover: #14213d;
-  --c-on-primary: #ffffff;
-  --c-accent: #9a3a06;           // orange brûlé, text: 7.0:1 AAA
-  --c-focus: #b54708;            // focus ring: 5.4:1
-  --c-focus-halo: #ffffff;
+  // ─── Couleurs (sombre, par défaut) ────────────────────────
+  --c-bg: #15171b;               // page
+  --c-surface: #1e2127;          // tiles
+  --c-surface-2: #282c33;        // blocks inside a tile
+  --c-border: #30343c;           // decorative separators only
+  --c-border-strong: #8b919c;    // form fields: 5.1:1
+  --c-text: #f3f4f6;             // 16.3:1  AAA
+  --c-text-muted: #b8bdc7;       // 8.6:1   AAA (7.4:1 on surface-2)
+  --c-link: #ffa06b;             // 8.1:1   AAA
+  --c-primary: #ff6b1f;          // button background (dark text: 6.3:1)
+  --c-primary-hover: #ff8547;
+  --c-on-primary: #15171b;
+  --c-accent: #ff7a33;           // text: 6.2:1 AA
+  --c-glow: rgb(255 107 31 / 0.35);
+  --c-focus: #ffd0a8;            // focus ring: 12.7:1
+  --c-focus-halo: #15171b;
 
   // Priorités (texte sur fond teinté, AAA)
-  --c-critique: #8f1414;   --c-critique-bg: #fdecec;   // 8.1:1
-  --c-importante: #7a3e00; --c-importante-bg: #fff1e0; // 7.5:1
-  --c-ameliorer: #1d3461;  --c-ameliorer-bg: #e8eef9;  // 10.4:1
+  --c-critique: #ff9b94;   --c-critique-bg: #3b1a1a;   // 7.7:1
+  --c-importante: #ffc978; --c-importante-bg: #3a2a12; // 9.1:1
+  --c-ameliorer: #c9d3e3;  --c-ameliorer-bg: #262b34;  // 9.4:1
 
   // Jauge (graphique, ≥ 3:1)
-  --c-score-bas: #b42318;    // 6.6:1
-  --c-score-moyen: #b54708;  // 5.4:1
-  --c-score-haut: #067647;   // 5.7:1
-  --c-score-piste: #dde3ec;
+  --c-score-bas: #ff7b70;    // 6.4:1
+  --c-score-moyen: #ff8a3d;  // 6.9:1
+  --c-score-haut: #5fdc9a;   // 9.4:1
+  --c-score-piste: #2d3139;
 
   // ─── Typographie ──────────────────────────────────────────
   --font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  // Wide capitals for h1/h2 only: body text stays in the hyperlegible face.
+  --font-display: 'Unbounded', 'Atkinson Hyperlegible', system-ui, sans-serif;
   --fs-0: 1.125rem;  // 18 px: corps de texte
   --fs-sm: 1rem;
   --fs-1: 1.375rem;
-  --fs-2: 1.75rem;
-  --fs-3: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  --fs-2: clamp(1.4rem, 1.2rem + 0.8vw, 1.75rem);
+  --fs-3: clamp(1.9rem, 1.4rem + 2.4vw, 3.25rem);
   --fs-score: 3.25rem;
   --lh: 1.6;
 
@@ -48,39 +54,42 @@
   --space-5: 2rem;
   --space-6: 3rem;
   --space-7: 4.5rem;
-  --radius: 0.75rem;
-  --radius-sm: 0.375rem;
+  --radius: 1.25rem;
+  --radius-sm: 0.625rem;
   --target: 2.75rem;   // 44 px: taille de cible tactile minimale
   --focus-width: 3px;
   --measure: 42rem;    // longueur de ligne confortable
-  --wrap: 62rem;
-  --shadow: 0 1px 2px rgb(20 33 61 / 0.08), 0 6px 20px rgb(20 33 61 / 0.06);
+  --wrap: 72rem;
+  --shadow: 0 16px 40px rgb(0 0 0 / 0.35);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --c-bg: #0f1729;
-    --c-surface: #18233a;
-    --c-border: #2c3a57;
-    --c-border-strong: #8795b0;  // 5.9:1
-    --c-text: #eef2f8;           // 15.8:1
-    --c-text-muted: #c3cad8;     // 10.9:1
-    --c-link: #9cc0ff;           // 9.4:1
-    --c-primary: #cfdcf7;        // button background (dark text: 12.8:1)
-    --c-primary-hover: #e4ecfb;
-    --c-on-primary: #0f1729;
-    --c-accent: #ffb27a;         // 10.1:1
-    --c-focus: #ffb27a;
-    --c-focus-halo: #0f1729;
+:root[data-theme='light'] {
+  color-scheme: light;
 
-    --c-critique: #ffb4b4;   --c-critique-bg: #3a1414;
-    --c-importante: #ffd08a; --c-importante-bg: #3a2610;
-    --c-ameliorer: #cfdcf7;  --c-ameliorer-bg: #1f2c48;
+  --c-bg: #eef0f3;
+  --c-surface: #ffffff;
+  --c-surface-2: #f4f6fa;
+  --c-border: #d5dae2;
+  --c-border-strong: #5b6882;    // 5.7:1
+  --c-text: #14213d;             // 16.0:1  AAA
+  --c-text-muted: #3d4a63;       // 8.9:1   AAA
+  --c-link: #1d4fa3;             // 7.8:1   AAA
+  --c-primary: #9a3a06;          // button background (white text: 7.0:1)
+  --c-primary-hover: #7a2e05;
+  --c-on-primary: #ffffff;
+  --c-accent: #9a3a06;           // 7.0:1 AAA
+  --c-glow: rgb(154 58 6 / 0.18);
+  --c-focus: #b54708;            // 5.4:1
+  --c-focus-halo: #ffffff;
 
-    --c-score-bas: #ff8a80;
-    --c-score-moyen: #ffb27a;
-    --c-score-haut: #6ee7a8;
-    --c-score-piste: #2c3a57;
-    --shadow: none;
-  }
+  --c-critique: #8f1414;   --c-critique-bg: #fdecec;
+  --c-importante: #7a3e00; --c-importante-bg: #fff1e0;
+  --c-ameliorer: #1d3461;  --c-ameliorer-bg: #e8eef9;
+
+  --c-score-bas: #b42318;
+  --c-score-moyen: #b54708;
+  --c-score-haut: #067647;
+  --c-score-piste: #dde3ec;
+
+  --shadow: 0 1px 2px rgb(20 33 61 / 0.08), 0 8px 24px rgb(20 33 61 / 0.08);
 }

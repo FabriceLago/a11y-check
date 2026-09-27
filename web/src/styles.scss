@@ -1,6 +1,7 @@
 // Self-hosted font: no call to Google Fonts (GDPR).
 @use '@fontsource/atkinson-hyperlegible/400.css' as font-400;
 @use '@fontsource/atkinson-hyperlegible/700.css' as font-700;
+@use '@fontsource/unbounded/600.css' as display-600;
 @use 'styles/tokens';
 @use 'styles/composants';
 
@@ -29,6 +30,16 @@ h3,
 h4 {
   line-height: 1.25;
   margin: 0 0 var(--space-3);
+}
+// h1/h2: wide display capitals (CSS only, the source text keeps its normal case for screen readers).
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  overflow-wrap: break-word;
 }
 h1 { font-size: var(--fs-3); }
 h2 { font-size: var(--fs-2); }
@@ -88,13 +99,14 @@ a {
   min-width: var(--target);
   padding: 0.6rem 1.4rem;
   border: 2px solid var(--c-primary);
-  border-radius: var(--radius-sm);
   background: var(--c-primary);
   color: var(--c-on-primary);
   font: inherit;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
+  border-radius: 999px;
+  box-shadow: 0 0 24px var(--c-glow);
   &:hover {
     background: var(--c-primary-hover);
     border-color: var(--c-primary-hover);
@@ -106,8 +118,9 @@ a {
   background: transparent;
   color: var(--c-text);
   border-color: var(--c-border-strong);
+  box-shadow: none;
   &:hover {
-    background: var(--c-surface);
+    background: var(--c-surface-2);
     border-color: var(--c-text);
   }
 }

@@ -48,10 +48,12 @@ import { messageErreur, Offre, REDIRECTION, ScanApi } from '../api';
       display: block;
     }
     .offre {
+      height: 100%;
       padding: var(--space-5);
-      border: 2px solid var(--c-accent);
+      border: 1px solid var(--c-accent);
       border-radius: var(--radius);
-      background: var(--c-bg);
+      background: var(--c-surface);
+      box-shadow: 0 0 32px var(--c-glow);
     }
     ul {
       padding-left: 1.2em;
